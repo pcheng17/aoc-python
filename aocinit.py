@@ -51,20 +51,22 @@ def aocinit():
         dedent('''\
             from aocd import data
 
-            def partA(dataList):
-                return
 
-            def partB(dataList):
-                return
+            def parse(data):
+                return data.splitlines()
+
+            def partA(input):
+                pass
+
+            def partB(input):
+                pass
 
 
-            dataList = data.splitlines()
-            print(f'Part A: {partA(dataList)}')
-            print(f'Part B: {partB(dataList)}')
+            input = parse(data)
+            print(f'Part A: {partA(input)}')
+            print(f'Part B: {partB(input)}')
             ''')
         )
-
-
     return
 
 

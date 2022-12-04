@@ -1,11 +1,22 @@
 from aocd import data
 
-cals = []
-for chunk in data.split("\n\n"):
-    cals.append(sum(map(int, chunk.split())))
 
-cals = sorted(cals)
+def findTotalCalories(inputList):
+    calories = []
+    for line in inputList:
+        calories.append(sum(map(int, line.split())))
+    return calories
 
-print(f"Part A: {cals[-1]}")
-print(f"Part B: {cals[-3] + cals[-2] + cals[-1]}")
+def partA(inputList):
+    cals = findTotalCalories(inputList)
+    return max(cals)
+
+def partB(inputList):
+    cals = sorted(findTotalCalories(inputList))
+    return cals[-3] + cals[-2] + cals[-1]
+
+
+inputList = data.split('\n\n')
+print(f"Part A: {partA(inputList)}")
+print(f"Part B: {partB(inputList)}")
 
