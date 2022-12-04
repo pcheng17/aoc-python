@@ -26,8 +26,7 @@ def partB(dataList):
         r1, r2 = line.split(',')
         r1a, r1b = map(int, r1.split('-'))
         r2a, r2b = map(int, r2.split('-'))
-        if isOverlapping(r1a, r1b, r2a, r2b):
-            result += 1
+        result += int(isOverlapping(r1a, r1b, r2a, r2b))
     return result 
 
 
