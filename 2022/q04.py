@@ -30,6 +30,6 @@ def partB(dataList):
     return result 
 
 
-dataList = data.split('\n')
+dataList = data.splitlines()
 print(f'Part A: {partA(dataList)}')
 print(f'Part B: {partB(dataList)}')
