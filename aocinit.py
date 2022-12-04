@@ -13,7 +13,8 @@ def aocinit():
     validYears = range(2015, now.year + int(now.month >= 11))
     validDays = range(1, 26)
 
-    parser = argparse.ArgumentParser(description="Poop")
+    parser = argparse.ArgumentParser(
+            description='Helper method for creating solution files from a template for a specified day')
     parser.add_argument(
             'year',
             nargs='?',
