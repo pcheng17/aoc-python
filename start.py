@@ -8,7 +8,7 @@ from textwrap import dedent
 from aocd.utils import AOC_TZ
 
 
-def aocinit():
+def main():
     now = datetime.now(tz=AOC_TZ)
     validYears = range(2015, now.year + int(now.month >= 11))
     validDays = range(1, 26)
@@ -44,6 +44,9 @@ def aocinit():
     year, day = args.year, args.day
     fileToCreate = Path(__file__).parent / f'{year}' / f'q{day:02d}.py'
 
+    if not fileToCreate.parents[0].exists():
+        fileToCreate.parents[0].mkdir(parents=True, exist_ok=True)
+
     if fileToCreate.exists():
         if not args.force:
             sys.exit(f'{fileToCreate} already exists! (use -f to overwrite)')
@@ -72,4 +75,4 @@ def aocinit():
 
 
 if __name__ == '__main__':
-    aocinit()
+    main()
