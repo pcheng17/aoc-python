@@ -61,11 +61,11 @@ def main():
 
 
             def partA(input):
-                pass
+               raise NotImplementedError
 
 
             def partB(input):
-                pass
+               raise NotImplementedError
 
 
             if __name__ == '__main__':
