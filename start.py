@@ -59,16 +59,19 @@ def main():
             def parse(data):
                 return data.splitlines()
 
+
             def partA(input):
                 pass
+
 
             def partB(input):
                 pass
 
 
-            input = parse(data)
-            print(f'Part A: {partA(input)}')
-            print(f'Part B: {partB(input)}')
+            if __name__ == '__main__':
+                input = parse(data)
+                print(f'Part A: {partA(input)}')
+                print(f'Part B: {partB(input)}')
             ''')
         )
     return
