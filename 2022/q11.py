@@ -1,6 +1,9 @@
+from common.utils import nlargest
 from aocd import data
 from typing import Callable
 from tqdm import tqdm
+
+
 
 
 GLOBALMOD = 1;
@@ -74,9 +77,8 @@ def partA(monkeys: list[Monkey]):
                 worry, dst = monkeys[i].processItemA()
                 monkeys[dst].addItem(worry)
 
-    inspCounts = [monkey.inspectionCount() for monkey in monkeys]
-    inspCounts = sorted(inspCounts)
-    return inspCounts[-1] * inspCounts[-2]
+    largestTwo = nlargest(2, [monkey.inspectionCount() for monkey in monkeys])
+    return largestTwo[0] * largestTwo[1]
 
 
 def partB(monkeys: list[Monkey]):
@@ -86,13 +88,13 @@ def partB(monkeys: list[Monkey]):
                 worry, dst = monkeys[i].processItemB()
                 monkeys[dst].addItem(worry)
 
-    inspCounts = [monkey.inspectionCount() for monkey in monkeys]
-    inspCounts = sorted(inspCounts)
-    return inspCounts[-1] * inspCounts[-2]
+    largestTwo = nlargest(2, [monkey.inspectionCount() for monkey in monkeys])
+    return largestTwo[0] * largestTwo[1]
 
         
-monkeys, GLOBALMOD = parse(data)
-print(f'Part A: {partA(monkeys)}')
+if __name__ == '__main__':
+    monkeys, GLOBALMOD = parse(data)
+    print(f'Part A: {partA(monkeys)}')
 
-monkeys, GLOBALMOD = parse(data)
-print(f'Part B: {partB(monkeys)}')
+    monkeys, GLOBALMOD = parse(data)
+    print(f'Part B: {partB(monkeys)}')
