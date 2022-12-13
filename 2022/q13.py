@@ -1,5 +1,5 @@
 from aocd import data
-import numpy as np
+import json 
 
 
 # a = [2, 3, 4, 1, 1]
@@ -37,43 +37,55 @@ def parse(data):
     pairsStr = data.split('\n\n')
     for pair in pairsStr:
         a, b = pair.split('\n')
-        pairList.append((eval(a), eval(b)))
+        pairList.append((json.loads(a), json.loads(b)))
     return pairList
 
+
+def isInt(x):
+    return isinstance(x, int)
+
+
+def isList(x):
+    return isinstance(x, list)
+
+
 def compare(arg1, arg2):
-    if type(arg1) == list and type(arg2) == list:
+    if isList(arg1) and isList(arg2):
         for a, b in zip(arg1, arg2):
-            aHasList = any(isinstance(x, list) for x in a)
-            bHasList = any(isinstance(x, list) for x in b)
-            if not aHasList and not bHasList:
-                order = np.lexsort(np.array([a, b]).T)
-                return order[0] == 0
-            else:
-                return compare(a, b)
-    elif type(arg1) == list and type(arg2) == int:
+            tmp = compare(a, b)
+            if tmp is not None: return tmp
+        return compare(len(arg1), len(arg2))
+    elif isList(arg1) and isInt(arg2):
         return compare(arg1, [arg2])
-    elif type(arg1) == int and type(arg2) == list:
+    elif isInt(arg1) and isList(arg2):
         return compare([arg1], arg2)
     else:
-        return compare([arg1], [arg2])
-
+        if arg1 == arg2:
+            return None
+        else:
+            return arg1 < arg2
 
 
 def partA(pairList):
     sum = 0
     for idx, pair in enumerate(pairList):
         if compare(pair[0], pair[1]):
-            print(idx+1)
             sum += (idx+1)
     return sum
 
 
-
-def partB(input):
-   raise NotImplementedError
+def partB(allList):
+    pos1 = 1 + sum(1 for x in allList if compare(x, [[2]]))
+    pos2 = 2 + sum(1 for x in allList if compare(x, [[6]]))
+    return pos1 * pos2
 
 
 if __name__ == '__main__':
-    pairList = parse(test)
+    pairList = parse(data)
     print(f'Part A: {partA(pairList)}')
-    # print(f'Part B: {partB(input)}')
+
+    allList = []
+    for a, b in pairList:
+        allList.append(a)
+        allList.append(b)
+    print(f'Part B: {partB(allList)}')
