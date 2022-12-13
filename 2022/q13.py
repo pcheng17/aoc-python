@@ -42,9 +42,14 @@ def parse(data):
 
 def compare(arg1, arg2):
     if type(arg1) == list and type(arg2) == list:
-        # for a, b in zip(arg1, arg2):
-        #     if any(isinstance(x, list) for x in arg1):
-
+        for a, b in zip(arg1, arg2):
+            aHasList = any(isinstance(x, list) for x in a)
+            bHasList = any(isinstance(x, list) for x in b)
+            if not aHasList and not bHasList:
+                order = np.lexsort(np.array([a, b]).T)
+                return order[0] == 0
+            else:
+                return compare(a, b)
     elif type(arg1) == list and type(arg2) == int:
         return compare(arg1, [arg2])
     elif type(arg1) == int and type(arg2) == list:
