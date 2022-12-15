@@ -28,3 +28,27 @@ def test_nlargest(n, iterable, key, result):
 )
 def test_nsmallest(n, iterable, key, result):
     assert nsmallest(n, iterable, key) == result
+
+@pytest.mark.parametrize(
+   'a, b, result',
+   [
+        (range(5), range(1,6), 5),
+        (range(-1, 4), range(5, 0, -1), 14),
+        (range(10), range(10), 0)
+   ]
+)
+def test_manhattan_dist(a, b, result):
+    assert manhattan_dist(a, b) == result
+
+@pytest.mark.parametrize(
+    'intervals, result',
+    [
+        ([[3,5], [1, 3], [6,7]], 2),
+        ([[11,15], [6,10], [1, 5]], 3),
+        ([[-1,10], [5,9], [0,7]], 1),
+        ([], 0)
+
+    ]
+)
+def test_merge_intervals(intervals, result):
+    assert len(merge_intervals(intervals)) == result

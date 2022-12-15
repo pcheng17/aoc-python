@@ -40,7 +40,7 @@ def mergeIntervals(intervals):
     result = []
     result.append(intervals[0])
     for x in intervals[1:]:
-        if x[0] < result[-1][1]:
+        if x[0] <= result[-1][1]:
             result[-1][1] = max(result[-1][-1], x[1])
         else:
             result.append(x)
@@ -77,9 +77,35 @@ def partA(inputMap, y):
     return count
 
 
-def partB(input):
-   raise NotImplementedError
+def partB(inputMap):
+    distMap = {}
+    for k, v in inputMap.items():
+        distMap[k] = manhattanDist(k, v)
 
+    xMin = 0
+    xMax = 4_000_000
+    yMin = 0
+    yMax = 4_000_000
+
+    intervals = {}
+
+    for y in range(yMin, yMax+1):
+        tmp = []
+        for k, v in distMap.items():
+            vertDist = abs(k[1] - y)
+            if vertDist <= v:
+                horizDist = v - vertDist
+                leftEnd = max(k[0] - horizDist, xMin)
+                rightEnd = min(k[0] + horizDist, xMax)
+                tmp.append([leftEnd, 1 + rightEnd])
+        intervals[y] = mergeIntervals(tmp)
+
+    for k, v in intervals.items():
+        if len(v) != 1:
+            yCoord = k 
+            xCoord = intervals[yCoord][0][1]
+            return 4_000_000 * xCoord + yCoord
+    
 
 if __name__ == '__main__':
     inputMap = parse(data)
@@ -89,5 +115,8 @@ if __name__ == '__main__':
     end = time.time()
     print(f'{(end - start) * 1e6} microseconds')
 
-    # print(f'Part B: {partB(input)}')
+    start = time.time()
+    print(f'Part B: {partB(inputMap)}')
+    end = time.time()
+    print(f'{(end - start)} seconds')
 
