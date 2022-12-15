@@ -1,5 +1,5 @@
 from aocd import data
-from tqdm import tqdm
+import time
 import re
 
 test = '''
@@ -19,10 +19,6 @@ Sensor at x=14, y=3: closest beacon is at x=15, y=3
 Sensor at x=20, y=1: closest beacon is at x=15, y=3
 '''
 
-testSmall = '''
-Sensor at x=8, y=7: closest beacon is at x=2, y=10
-'''
-
 def parse(data):
     lines = data.split('\n')
     inputMap = {}
@@ -36,33 +32,48 @@ def parse(data):
 
 
 def manhattanDist(a, b):
-    return abs(a[0] - b[0]) + abs(a[1] - b[1])
+    return sum(abs(x-y) for x, y in zip(a, b))
 
-def partA(inputMap):
+def mergeIntervals(intervals):
+    intervals = sorted(intervals, key = lambda x : x[0])
+
+    result = []
+    result.append(intervals[0])
+    for x in intervals[1:]:
+        if x[0] < result[-1][1]:
+            result[-1][1] = max(result[-1][-1], x[1])
+        else:
+            result.append(x)
+
+    return result
+
+
+def partA(inputMap, y):
     distMap = {}
-    maxDist = -1
     for k, v in inputMap.items():
         distMap[k] = manhattanDist(k, v)
-        if distMap[k] > maxDist:
-            maxDist = distMap[k]
 
-    lowerBound = list(inputMap.keys())[0][0]
-    upperBound = list(inputMap.keys())[0][0]
-    for s in inputMap.keys():
-        lowerBound = min([lowerBound, s[0]])
-        upperBound = max([upperBound, s[0]])
-    lowerBound -= maxDist
-    upperBound += maxDist
+    intervals = []
+    sensorCount = 0
+    for k, v in distMap.items():
+        vertDist = abs(k[1] - y)
+        if vertDist == 0:
+            sensorCount += 1
+        if vertDist <= v:
+            horizDist = v - vertDist
+            leftEnd = k[0] - horizDist
+            rightEnd = k[0] + horizDist
+            if (leftEnd, y) in inputMap.values(): leftEnd += 1
+            if (rightEnd, y) in inputMap.values(): rightEnd -= 1
+            if rightEnd > leftEnd:
+                intervals.append([leftEnd, 1 + rightEnd])
     
+    intervals = mergeIntervals(intervals) 
+
     count = 0
-    visited = set()
-    for i in tqdm(range(lowerBound, upperBound+1)):
-        for k, v in distMap.items():
-            pos = (i, 2000000)
-            if pos not in inputMap.values() and pos not in inputMap.keys() and pos not in visited:
-                if manhattanDist(pos, k) <= v:
-                    count += 1
-                    visited.add(pos)
+    for r in intervals:
+        count += r[1] - r[0]
+
     return count
 
 
@@ -72,5 +83,11 @@ def partB(input):
 
 if __name__ == '__main__':
     inputMap = parse(data)
-    print(f'Part A: {partA(inputMap)}')
+
+    start = time.time()
+    print(f'Part A: {partA(inputMap, 2_000_000)}')
+    end = time.time()
+    print(f'{(end - start) * 1e6} microseconds')
+
     # print(f'Part B: {partB(input)}')
+
