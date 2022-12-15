@@ -1,5 +1,5 @@
 from aocd import data
-import copy
+from tqdm import tqdm
 import re
 
 test = '''
@@ -55,11 +55,14 @@ def partA(inputMap):
     upperBound += maxDist
     
     count = 0
-    for i in range(lowerBound, upperBound+1):
+    visited = set()
+    for i in tqdm(range(lowerBound, upperBound+1)):
         for k, v in distMap.items():
-            pos = (i, 10)
-            if manhattanDist(pos, k) <= v and pos not in inputMap.values() and pos not in inputMap.keys():
-                count += 1
+            pos = (i, 2000000)
+            if pos not in inputMap.values() and pos not in inputMap.keys() and pos not in visited:
+                if manhattanDist(pos, k) <= v:
+                    count += 1
+                    visited.add(pos)
     return count
 
 
@@ -68,6 +71,6 @@ def partB(input):
 
 
 if __name__ == '__main__':
-    inputMap = parse(testSmall)
+    inputMap = parse(data)
     print(f'Part A: {partA(inputMap)}')
     # print(f'Part B: {partB(input)}')
