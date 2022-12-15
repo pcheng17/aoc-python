@@ -14,12 +14,12 @@ def parse(data):
         allCoords.append(coordList)
     return allCoords
 
-def simSand(grid, pos):
-    # Down
-    if grid[pos[1]+1][pos[0]] == '.':
-        pos += np.array([1, 0], dtype=int)
-        return simSand(grid, pos)
-    else:
+# def simSand(grid, pos):
+#     # Down
+#     if grid[pos[1]+1][pos[0]] == '.':
+#         pos += np.array([1, 0], dtype=int)
+#         return simSand(grid, pos)
+#     else:
 
 
 def partA(allCoords):
