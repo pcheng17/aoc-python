@@ -1,22 +1,25 @@
 from aocd import data
+from common.utils import nlargest
 
+def parse(data):
+    return data.split('\n\n')
 
 def findTotalCalories(inputList):
-    calories = []
-    for line in inputList:
-        calories.append(sum(map(int, line.split())))
-    return calories
+    return [sum(map(int, line.split())) for line in inputList]
 
 def partA(inputList):
-    cals = findTotalCalories(inputList)
-    return max(cals)
+    return max(findTotalCalories(inputList))
 
 def partB(inputList):
-    cals = sorted(findTotalCalories(inputList))
-    return cals[-3] + cals[-2] + cals[-1]
+    return sum(nlargest(3, findTotalCalories(inputList)))
 
+def solveA(input):
+    return partA(input)
 
-inputList = data.split('\n\n')
-print(f"Part A: {partA(inputList)}")
-print(f"Part B: {partB(inputList)}")
+def solveB(input):
+    return partB(input)
 
+if __name__ == '__main__':
+    input = parse(data)
+    print(f"Part A: {partA(input)}")
+    print(f"Part B: {partB(input)}")
