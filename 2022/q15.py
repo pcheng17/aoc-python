@@ -47,6 +47,24 @@ def mergeIntervals(intervals):
 
     return result
 
+def mergeIntervalsB(intervals):
+    intervals = sorted(intervals, key = lambda x : x[0])
+
+    result = []
+    smallestOverlap = None
+    result.append(intervals[0])
+    for x in intervals[1:]:
+        if x[0] <= result[-1][1]:
+            if smallestOverlap is None:
+                smallestOverlap = result[-1][1] - x[0] + 1 
+            else:
+                smallestOverlap = min(smallestOverlap, result[-1][1] - x[0] + 1)
+            result[-1][1] = max(result[-1][-1], x[1])
+        else:
+            result.append(x)
+
+    return result, smallestOverlap
+
 
 def partA(inputMap, y):
     distMap = {}
@@ -87,8 +105,6 @@ def partB(inputMap):
     yMin = 0
     yMax = 4_000_000
 
-    intervals = {}
-
     for y in range(yMin, yMax+1):
         tmp = []
         for k, v in distMap.items():
@@ -98,14 +114,12 @@ def partB(inputMap):
                 leftEnd = max(k[0] - horizDist, xMin)
                 rightEnd = min(k[0] + horizDist, xMax)
                 tmp.append([leftEnd, 1 + rightEnd])
-        intervals[y] = mergeIntervals(tmp)
-
-    for k, v in intervals.items():
-        if len(v) != 1:
-            yCoord = k 
-            xCoord = intervals[yCoord][0][1]
+        tmp = mergeIntervals(tmp)
+        if len(tmp) != 1:
+            yCoord = y 
+            xCoord = tmp[0][1]
             return 4_000_000 * xCoord + yCoord
-    
+
 
 if __name__ == '__main__':
     inputMap = parse(data)
