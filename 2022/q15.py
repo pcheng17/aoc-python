@@ -121,6 +121,13 @@ def partB(inputMap):
             return 4_000_000 * xCoord + yCoord
 
 
+def solveA(input):
+    return partA(input, 2_000_000)
+
+def solveB(input):
+    return partB(input)
+
+
 if __name__ == '__main__':
     inputMap = parse(data)
 
