@@ -1,16 +1,21 @@
 from aocd import data
-import copy
-import numpy as np
+from copy import deepcopy
 
 test = '''498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9'''
+
+
+DIRS = [
+    (-1, -1),
+    (1, -1)
+]
 
 def parse(data):
     lines = data.splitlines()
     allCoords = []
     for line in lines:
         coordStrList = line.split(' -> ')
-        coordList = [np.array(list(map(int, str.split(','))), dtype=int) for str in coordStrList]
+        coordList = [tuple(map(int, str.split(','))) for str in coordStrList]
         allCoords.append(coordList)
     return allCoords
 
@@ -22,45 +27,28 @@ def parse(data):
 #     else:
 
 
-def partA(allCoords):
-    pass
-    # # Find the bounding box for the walls
-    # minCoord = copy.deepcopy(allCoords[0][0])
-    # maxCoord = copy.deepcopy(allCoords[0][0])
-    # for coordList in allCoords:
-    #     for coord in coordList:
-    #         minCoord = np.minimum(minCoord, coord)
-    #         maxCoord = np.maximum(maxCoord, coord)
-    #
-    # minCoord[1] = 0
-    # delta = copy.deepcopy(minCoord)
-    #
-    # sandStart = np.array([500, 0], dtype=int) - delta
-    # newMin = minCoord - delta
-    # newMax = maxCoord - delta
-    # nRows = newMax[0] - newMin[0] + 1
-    # nCols = newMax[1] - newMin[1] + 1
-    #
-    # #Create the grid
-    # grid = [['.' for _ in range(nRows)] for _ in range(nCols)]
-    #
-    # rocks = {}
-    #
-    # for coordList in allCoords:
-    #     for idx in range(len(coordList)-1):
-    #         start = coordList[idx]
-    #         end = coordList[idx+1]
-    #         segment = end - start
-    #         if np.any(segment < 0):
-    #             start, end = end, start
-    #         for i in range(start[1], end[1]+1):
-    #             for j in range(start[0], end[0]+1):
-    #                 rocks[(i, j)] = 1
-    #
-    # grid[sandStart[1]][sandStart[0]] = '+'
-    #
-    # for row in grid:
-    #     print(''.join(row))
+def partA(input):
+    rocks = set()
+
+    for row in input:
+        for idx in range(len(row)-1):
+            start = row[idx]
+            end = row[idx+1]
+            if end[0] < start[0] or end[1] < start[1]:
+                start, end = end, start
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    rocks.add((i, j))
+    
+
+
+
+
+                
+
+
+
+
 
     # # Run simulation
     # unitsOfSand = 0
@@ -71,7 +59,15 @@ def partA(allCoords):
 
 
 def partB(input):
-   raise NotImplementedError
+    pass
+
+
+def solveA(input):
+    return partA(input)
+
+
+def solveB(input):
+    return partB(input)
 
 
 if __name__ == '__main__':
