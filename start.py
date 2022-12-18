@@ -61,17 +61,25 @@ def main():
 
 
             def partA(input):
-               raise NotImplementedError
+                pass
 
 
             def partB(input):
-               raise NotImplementedError
+                pass
+
+
+            def solveA(input):
+                return partA(input)
+
+
+            def solveB(input):
+                return partB(input)
 
 
             if __name__ == '__main__':
                 input = parse(data)
-                print(f'Part A: {partA(input)}')
-                print(f'Part B: {partB(input)}')
+                print(f'Part A: {solveA(input)}')
+                print(f'Part B: {solveB(input)}')
             ''')
         )
     return
