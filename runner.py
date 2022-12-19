@@ -5,7 +5,6 @@ import sys
 import time
 
 
-# TODO Gracefully error out if file doesn't exist
 # TODO If the runner received no args, run today's aoc 
 # TODO Consider giving myself a way to run test code too?
 
