@@ -18,21 +18,27 @@ def simulate(blueprint, total_time):
 
 
     # Initial state of the simulation
-    #   - Ore robots
-    #   - Clay robots
-    #   - Obsidian robots
-    #   - Geode robots
-    #   - Ore count
-    #   - Clay count
-    #   - Obsidian count
-    #   - Geode count
-    #   - Time remaining
+    #   0) Ore robots
+    #   1) Clay robots
+    #   2) Obsidian robots
+    #   3) Geode robots
+    #   4) Ore count
+    #   5) Clay count
+    #   6) Obsidian count
+    #   7) Geode count
+    #   8) Time remaining
     initial = (1, 0, 0, 0, 0, 0, 0, 0, total_time)
 
     queue = deque([initial])
     seen = set()
     max_geodes = 0
 
+    # while queue:
+    #     state = queue.popleft()
+    #     orr, cr, obr, gr, oc, cc, obc, gc, tr = state
+    #
+    #     if state in seen:
+    #         continue
 
 
 def partA(input):
