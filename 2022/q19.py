@@ -12,9 +12,15 @@ def parse(data):
 
 
 def simulate(blueprint, total_time):
-    bp_idx, ore_ore, clay_ore, obo_ore, obo_clay, geo_ore, geo_obo = blueprint
-    
-    max_ore_cost = max(ore_ore, clay_ore, obo_ore, geo_ore)
+    # oroc = Ore Robot Ore Cost
+    # croc = Clay Robot Ore Cost
+    # obroc = OBsidian Robot Ore Cost
+    # obrcc = OBsidian Robot Clay Cost
+    # groc = Geode Robot Ore Cost
+    # grobc = Geode Robot OBsidian Cost
+    bp_idx, oroc, croc, obroc, obrcc, groc, grobc = blueprint
+
+    max_ore_cost = max(oroc, croc, obroc, groc)
 
 
     # Initial state of the simulation

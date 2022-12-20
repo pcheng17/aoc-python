@@ -39,10 +39,11 @@ def main(args):
     input = module.parse(module.data)
 
     if part is not None:
-        t0 = time.time()
-        sol = getattr(module, f'solve{part[0]}')(input)
-        t1 = time.time()
-        print(f'🎄 Part {part[0]}: {sol} :: {t1-t0:.6f} sec')
+        for x in sorted(part):
+            t0 = time.time()
+            sol = getattr(module, f'solve{x.upper()}')(input)
+            t1 = time.time()
+            print(f'🎄 Part {x.upper()}: {sol} :: {t1-t0:.6f} sec')
     else:
         for x in ['A', 'B']:
             t0 = time.time()
