@@ -1,6 +1,6 @@
 from aocd import data
 from copy import deepcopy
-import sympy as sp
+import sympy
 
 
 
@@ -23,6 +23,7 @@ hmdt: 32
 '''
 
 VAR = 'humn'
+
 
 def parse(data):
     variables = {}
@@ -47,7 +48,12 @@ def partA(variables, expressions):
         to_del = []
         for x, y in expressions.items():
             if not any(c.isalpha() for c in y):
-                variables[x] = eval(y)
+                a, op, b = y.split(' ')
+                match op:
+                    case '+': variables[x] = int(a) + int(b)
+                    case '-': variables[x] = int(a) - int(b)
+                    case '*': variables[x] = int(a) * int(b)
+                    case '/': variables[x] = int(a) // int(b)
                 to_del.append(x)
 
         for x in to_del:
@@ -75,7 +81,12 @@ def partB(variables, expressions):
         to_del = []
         for x, y in expressions.items():
             if not any(c.isalpha() for c in y):
-                variables[x] = eval(y)
+                a, op, b = y.split(' ')
+                match op:
+                    case '+': variables[x] = int(a) + int(b)
+                    case '-': variables[x] = int(a) - int(b)
+                    case '*': variables[x] = int(a) * int(b)
+                    case '/': variables[x] = int(a) // int(b)
                 to_del.append(x)
 
         for x in to_del:
@@ -109,9 +120,9 @@ def partB(variables, expressions):
     rootLeft = rootLeft.replace(VAR, 'x')
     rootRight = rootRight.replace(VAR, 'x')
 
-    x, y = sp.symbols('x y')
-    equation = sp.Eq(y, eval(f'{rootRight} - {rootLeft}'))
-    return sp.solve(equation.subs(y, 0))[0]
+    x, y = sympy.symbols('x y')
+    equation = sympy.Eq(y, sympy.parsing.sympy_parser.parse_expr(f'{rootRight} - {rootLeft}'))
+    return sympy.solve(equation.subs(y, 0))[0]
       
 
 def solveA(input):
