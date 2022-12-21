@@ -19,14 +19,10 @@ def parse(data):
 
 
 def mix(input: list[int], indexed_input: list[tuple[int, int]]):
-    length = len(indexed_input)
-
     for i in range(len(indexed_input)):
         n = input[i]
         bIdx = indexed_input.index((i, n))
         eIdx = (bIdx + n) % (len(indexed_input) - 1)
-        if eIdx == 0:
-            eIdx = length - 1
         if bIdx < eIdx:
             indexed_input[bIdx : eIdx] = indexed_input[bIdx + 1 : eIdx + 1]
         elif bIdx > eIdx:
