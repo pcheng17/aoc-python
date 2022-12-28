@@ -1,11 +1,14 @@
 from collections import deque
 from aocd import data
 import re
+import json
 
 
 test = '''
 Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.
 '''
+
+
 
 def parse(data):
     blueprints = []
@@ -15,115 +18,138 @@ def parse(data):
     return blueprints
 
 
+def collect(resources, robots):
+    for k, v in robots.items():
+        resources[k] += v
+    return resources
+
+def buyOreRobot(blueprint, resources, robots):
+    resources['ore'] -= blueprint[1]
+    robots['ore'] += 1
+    return (resources, robots)
+
+def buyClayRobot(blueprint, resources, robots):
+    resources['ore'] -= blueprint[2]
+    robots['clay'] += 1
+    return (resources, robots)
+
+def buyObsidianRobot(blueprint, resources, robots):
+    resources['ore'] -= blueprint[3]
+    resources['clay'] -= blueprint[4]
+    robots['obsidian'] += 1
+    return (resources, robots)
+
+def buyGeodeRobot(blueprint, resources, robots):
+    resources['ore'] -= blueprint[5]
+    resources['obsidian'] -= blueprint[6]
+    robots['geode'] += 1
+    return (resources, robots)
+
+
 def dfs(
     blueprint,
-    ore_robots,
-    clay_robots,
-    obsidian_robots,
-    geode_robots,
-    ore_count,
-    clay_count,
-    obsidian_count,
-    geode_count,
-    time_remaining):
+    resources,
+    robots,
+    max_geode_count,
+    time_remaining,
+    visited,
+    dp):
 
-    idx, oroc, croc, obroc, obrcc, groc, grobc = blueprint
+    fset = frozenset(visited)
+    dp[fset] = max(dp.get(fset, 0), max_geode_count)
 
-    max_ore_cost = max(oroc, croc, obroc, groc)
+    if time_remaining <= 0:
+        return
 
-    if ore_robots < max_ore_cost and ore_count >= oroc:
-        # Buy ore robot
-        dfs(
-            blueprint, 
-            ore_robots+1, 
-            clay_robots, 
-            obsidian_robots, 
-            geode_robots, 
-            ore_count + ore_robots - oroc, 
-            clay_count + clay_robots, 
-            obsidian_count + obsidian_robots, 
-            geode_count + geode_robots, 
-            time_remaining - 1)
-    elif clay_robots < obrcc and ore_count >= croc:
+    print(f'Resources: {resources} ::: Robots: {robots}')
+
+    max_ore_cost = max(blueprint[1], blueprint[2], blueprint[3], blueprint[5])
+
+    if resources['ore'] >= blueprint[5] and resources['obsidian'] >= blueprint[6]: 
+        # Buy geode robot
+        resources = collect(resources, robots)
+        resources, robots = buyGeodeRobot(blueprint, resources, robots)
+        max_geode_count = resources['geode']
+        next_visited = visited.copy()
+        next_visited.add((
+            json.dumps(resources, sort_keys=True),
+            json.dumps(robots, sort_keys=True),
+            max_geode_count,
+            time_remaining - 1)) 
+        dfs(blueprint, resources, robots, max_geode_count, time_remaining - 1, next_visited, dp)
+
+    elif robots['obsidian'] < blueprint[6] and resources['ore'] >= blueprint[3] and resources['clay'] >= blueprint[4]:
+        # Buy obsidian robot
+        resources = collect(resources, robots)
+        resources, robots = buyObsidianRobot(blueprint, resources, robots)
+        max_geode_count = resources['geode']
+        next_visited = visited.copy()
+        next_visited.add((
+            json.dumps(resources, sort_keys=True),
+            json.dumps(robots, sort_keys=True),
+            max_geode_count,
+            time_remaining - 1)) 
+        dfs(blueprint, resources, robots, max_geode_count, time_remaining - 1, next_visited, dp)
+
+    elif robots['clay'] < blueprint[4] and resources['ore'] >= blueprint[2]:
         # Buy clay robot
-        dfs(
-            blueprint,
-            ore_robots,
-            clay_robots + 1,
-            obsidian_robots,
-            geode_robots,
-            ore_count + ore_robots - croc,
-            clay_count + clay_robots,
-            obsidian_count + obsidian_robots,
-            geode_count + geode_robots,
-            time_remaining - 1)
+        resources = collect(resources, robots)
+        resources, robots = buyClayRobot(blueprint, resources, robots)
+        max_geode_count = resources['geode']
+        next_visited = visited.copy()
+        next_visited.add((
+            json.dumps(resources, sort_keys=True),
+            json.dumps(robots, sort_keys=True),
+            max_geode_count,
+            time_remaining - 1)) 
+        dfs(blueprint, resources, robots, max_geode_count, time_remaining - 1, next_visited, dp)
+
+    elif robots['ore'] < max_ore_cost and resources['ore'] >= blueprint[1]:
+        # Buy ore robot
+        resources = collect(resources, robots)
+        resources, robots = buyOreRobot(blueprint, resources, robots)
+        max_geode_count = resources['geode']
+        next_visited = visited.copy()
+        next_visited.add((
+            json.dumps(resources, sort_keys=True),
+            json.dumps(robots, sort_keys=True),
+            max_geode_count,
+            time_remaining - 1)) 
+        dfs(blueprint, resources, robots, max_geode_count, time_remaining - 1, next_visited, dp)
+
     else:
         # Do nothing
-        dfs(
-            blueprint,
-            ore_robots,
-            clay_robots,
-            obsidian_robots,
-            geode_robots,
-            ore_count + ore_robots,
-            clay_count + clay_robots,
-            obsidian_count + obsidian_robots,
-            geode_count + geode_robots,
-            time_remaining - 1)
-
-
-
+        resources = collect(resources, robots)
+        max_geode_count = resources['geode']
+        next_visited = visited.copy()
+        next_visited.add((
+            json.dumps(resources, sort_keys=True),
+            json.dumps(robots, sort_keys=True),
+            max_geode_count,
+            time_remaining - 1)) 
+        dfs(blueprint, resources, robots, max_geode_count, time_remaining - 1, next_visited, dp)
 
 
 def simulate(blueprint, total_time) -> int:
-    # oroc = Ore Robot Ore Cost
-    # croc = Clay Robot Ore Cost
-    # obroc = OBsidian Robot Ore Cost
-    # obrcc = OBsidian Robot Clay Cost
-    # groc = Geode Robot Ore Cost
-    # grobc = Geode Robot OBsidian Cost
-    idx, oroc, croc, obroc, obrcc, groc, grobc = blueprint
 
-    max_ore_cost = max(oroc, croc, obroc, groc)
+    resources = { 'ore': 0, 'clay': 0, 'obsidian': 0, 'geode': 0 }
+    robots    = { 'ore': 1, 'clay': 0, 'obsidian': 0, 'geode': 0 }
 
-    # Initial state of the simulation
-    #   0) Ore robots
-    #   1) Clay robots
-    #   2) Obsidian robots
-    #   3) Geode robots
-    #   4) Ore count
-    #   5) Clay count
-    #   6) Obsidian count
-    #   7) Geode count
-    #   8) Time remaining
-    initial = (1, 0, 0, 0, 0, 0, 0, 0, total_time)
-
-    queue = deque([initial])
-    seen = set()
-    max_geodes = 0
-
-    while queue:
-        state = queue.popleft()
-        orr, cr, obr, gr, oc, cc, obc, gc, tr = state
-
-        if gc > max_geodes:
-            max_geodes = gc
-
-        # Stopping condition on time
-        if tr == 0:
-            break
-
-        if orr < max_ore_cost and oc >= oroc:
-            queue.append((orr+1, cr, obr, gr, oc+orr-oroc, cc+cr, obc+obr, gc+gr, tr-1))
-        elif cr < obrcc and oc >= croc: 
-            queue.append((orr, cr+1, obr, gr, oc+orr-croc, cc+cr, obc+obr, gc+gr, tr-1))
-        else:
-            queue.append((orr, cr, obr, gr, oc+orr, cc+cr, obc+obc, gc+gr, tr-1))
-
-        print(queue)
-
-    return max_geodes
-
+    dp, visited = {}, set()
+    max_geode_count = 0
+    visited.add((
+        resources['ore'], 
+        resources['clay'], 
+        resources['obsidian'], 
+        resources['geode'], 
+        robots['ore'], 
+        robots['clay'], 
+        robots['obsidian'], 
+        robots['geode'],
+        max_geode_count,
+        total_time)) 
+    dfs(blueprint, resources, robots, max_geode_count, total_time, visited, dp)
+    return max_geode_count
 
 
 def partA(blueprints):
