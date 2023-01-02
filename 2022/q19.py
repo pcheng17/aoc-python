@@ -29,7 +29,8 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
 
     MAX_GEODES = max(MAX_GEODES, geode_count)
 
-    if time_remaining <= 0:
+    if time_remaining <= 1:
+        MAX_GEODES = geode_count + time_remaining * geode_robot
         return
 
     # If MAX_GEODES is greater than the number of geodes we can produce assuming we just
@@ -38,8 +39,6 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
     if MAX_GEODES >= geode_count + time_remaining * geode_robot + tmp:
         return
 
-    max_ore_cost = max(blueprint[1], blueprint[2], blueprint[3], blueprint[5])
-
     # If we have enough robots to generate resources for a geode robot...
     if ore_robot >= blueprint[5] and obs_robot >= blueprint[6]:
         # If we have enough resources to buy a geode robot...
@@ -47,26 +46,24 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
             # Buy geode robots until the end of time.
             # But we can easily calculate the ending number of geodes, so let's just do that.
             tmp = time_remaining + (time_remaining - 1) // 2
-            MAX_GEODE = geode_count + time_remaining * geode_robot + tmp
-            return 
+            MAX_GEODES = geode_count + time_remaining * geode_robot + tmp
         else:
-            # Wait a turn because next turn, we'll be ready to easy-out.
-            state = (
-                ore_count + ore_robot,
-                clay_count + clay_robot,
-                obs_count + obs_robot,
-                geode_count + geode_robot,
-                ore_robot,
-                clay_robot,
-                obs_robot,
-                geode_robot,
-                time_remaining - 1
-            )
-            dfs(blueprint, *state)
+            # Wait a turn because next turn, we'll be ready to easy out
+            ore_count += ore_robot
+            clay_count += clay_robot
+            obs_count += obs_robot
+            geode_count += geode_robot
+            time_remaining -= 1
+
+            # Easy out
+            tmp = time_remaining + (time_remaining - 1) // 2
+            MAX_GEODES = geode_count + time_remaining * geode_robot + tmp
+        return
 
     if ore_count >= blueprint[5] and obs_count >= blueprint[6]: 
         # Buy geode robot
-        state = (
+        dfs(
+            blueprint,
             ore_count + ore_robot - blueprint[5],
             clay_count + clay_robot,
             obs_count + obs_robot - blueprint[6],
@@ -77,12 +74,12 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
             geode_robot + 1,
             time_remaining - 1
         )
-        dfs(blueprint, *state)
         return
 
     if obs_robot < blueprint[6] and ore_count >= blueprint[3] and clay_count >= blueprint[4]:
         # Buy obsidian robot
-        state = (
+        dfs(
+            blueprint,
             ore_count + ore_robot - blueprint[3],
             clay_count + clay_robot - blueprint[4],
             obs_count + obs_robot,
@@ -93,11 +90,12 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
             geode_robot,
             time_remaining - 1
         )
-        dfs(blueprint, *state)
 
+    max_ore_cost = max(blueprint[1], blueprint[2], blueprint[3], blueprint[5])
     if ore_robot < max_ore_cost and ore_count >= blueprint[1]:
         # Buy ore robot
-        state = (
+        dfs(
+            blueprint,
             ore_count + ore_robot - blueprint[1],
             clay_count + clay_robot,
             obs_count + obs_robot,
@@ -108,11 +106,11 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
             geode_robot,
             time_remaining - 1
         )
-        dfs(blueprint, *state)
 
     if clay_robot < blueprint[4] and ore_count >= blueprint[2]:
         # Buy clay robot
-        state = (
+        dfs(
+            blueprint,
             ore_count + ore_robot - blueprint[2],
             clay_count + clay_robot,
             obs_count + obs_robot,
@@ -123,10 +121,10 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
             geode_robot,
             time_remaining - 1
         )
-        dfs(blueprint, *state)
 
     # Do nothing
-    state = (
+    dfs(
+        blueprint,
         ore_count + ore_robot,
         clay_count + clay_robot,
         obs_count + obs_robot,
@@ -137,7 +135,6 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
         geode_robot,
         time_remaining - 1
     )
-    dfs(blueprint, *state)
 
 
 def simulate(blueprint, total_time) -> int:
