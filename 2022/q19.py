@@ -24,7 +24,7 @@ def init_global(x):
     global MAX_GEODES
     MAX_GEODES = x
 
-def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, clay_robot, obs_robot, geode_robot, time_remaining):
+def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, clay_robot, obs_robot, geode_robot, time_remaining, could_buy):
     global MAX_GEODES
 
     MAX_GEODES = max(MAX_GEODES, geode_count)
@@ -60,67 +60,80 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
             MAX_GEODES = max(MAX_GEODES, geode_count + time_remaining * geode_robot + tmp)
         return
 
-    if ore_count >= blueprint[5] and obs_count >= blueprint[6]: 
-        # Buy geode robot
-        dfs(
-            blueprint,
-            ore_count + ore_robot - blueprint[5],
-            clay_count + clay_robot,
-            obs_count + obs_robot - blueprint[6],
-            geode_count + geode_robot,
-            ore_robot,
-            clay_robot,
-            obs_robot,
-            geode_robot + 1,
-            time_remaining - 1
-        )
-        return
+    can_buy = [False, False, False, False]
 
-    if obs_robot < blueprint[6] and ore_count >= blueprint[3] and clay_count >= blueprint[4]:
-        # Buy obsidian robot
-        dfs(
-            blueprint,
-            ore_count + ore_robot - blueprint[3],
-            clay_count + clay_robot - blueprint[4],
-            obs_count + obs_robot,
-            geode_count + geode_robot,
-            ore_robot,
-            clay_robot,
-            obs_robot + 1,
-            geode_robot,
-            time_remaining - 1
-        )
+    if could_buy is None or not could_buy[3]:
+        if ore_count >= blueprint[5] and obs_count >= blueprint[6]: 
+            # Buy geode robot
+            can_buy[3] = True
+            dfs(
+                blueprint,
+                ore_count + ore_robot - blueprint[5],
+                clay_count + clay_robot,
+                obs_count + obs_robot - blueprint[6],
+                geode_count + geode_robot,
+                ore_robot,
+                clay_robot,
+                obs_robot,
+                geode_robot + 1,
+                time_remaining - 1,
+                None
+            )
+
+    if could_buy is None or not could_buy[2]:
+        if obs_robot < blueprint[6] and ore_count >= blueprint[3] and clay_count >= blueprint[4]:
+            # Buy obsidian robot
+            can_buy[2] = True
+            dfs(
+                blueprint,
+                ore_count + ore_robot - blueprint[3],
+                clay_count + clay_robot - blueprint[4],
+                obs_count + obs_robot,
+                geode_count + geode_robot,
+                ore_robot,
+                clay_robot,
+                obs_robot + 1,
+                geode_robot,
+                time_remaining - 1,
+                None
+            )
 
     max_ore_cost = max(blueprint[1], blueprint[2], blueprint[3], blueprint[5])
-    if ore_robot < max_ore_cost and ore_count >= blueprint[1]:
-        # Buy ore robot
-        dfs(
-            blueprint,
-            ore_count + ore_robot - blueprint[1],
-            clay_count + clay_robot,
-            obs_count + obs_robot,
-            geode_count + geode_robot,
-            ore_robot + 1,
-            clay_robot,
-            obs_robot,
-            geode_robot,
-            time_remaining - 1
-        )
+    if could_buy is None or not could_buy[0]:
+        if ore_robot < max_ore_cost and ore_count >= blueprint[1]:
+            # Buy ore robot
+            can_buy[0] = True
+            dfs(
+                blueprint,
+                ore_count + ore_robot - blueprint[1],
+                clay_count + clay_robot,
+                obs_count + obs_robot,
+                geode_count + geode_robot,
+                ore_robot + 1,
+                clay_robot,
+                obs_robot,
+                geode_robot,
+                time_remaining - 1,
+                None
+            )
 
-    if clay_robot < blueprint[4] and ore_count >= blueprint[2]:
-        # Buy clay robot
-        dfs(
-            blueprint,
-            ore_count + ore_robot - blueprint[2],
-            clay_count + clay_robot,
-            obs_count + obs_robot,
-            geode_count + geode_robot,
-            ore_robot,
-            clay_robot + 1,
-            obs_robot,
-            geode_robot,
-            time_remaining - 1
-        )
+    if could_buy is None or not could_buy[1]:
+        if clay_robot < blueprint[4] and ore_count >= blueprint[2]:
+            # Buy clay robot
+            can_buy[1] = True
+            dfs(
+                blueprint,
+                ore_count + ore_robot - blueprint[2],
+                clay_count + clay_robot,
+                obs_count + obs_robot,
+                geode_count + geode_robot,
+                ore_robot,
+                clay_robot + 1,
+                obs_robot,
+                geode_robot,
+                time_remaining - 1,
+                None
+            )
 
     # Do nothing
     dfs(
@@ -133,7 +146,8 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
         clay_robot,
         obs_robot,
         geode_robot,
-        time_remaining - 1
+        time_remaining - 1,
+        can_buy
     )
 
 
@@ -144,7 +158,7 @@ def simulate(blueprint, total_time) -> int:
     ore_count, clay_count, obs_count, geode_count = 0, 0, 0, 0
     ore_robot, clay_robot, obs_robot, geode_robot = 1, 0, 0, 0
 
-    dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, clay_robot, obs_robot, geode_robot, total_time)
+    dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, clay_robot, obs_robot, geode_robot, total_time, None)
     return MAX_GEODES
 
 
