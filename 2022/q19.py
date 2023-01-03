@@ -24,6 +24,9 @@ def init_global(x):
     global MAX_GEODES
     MAX_GEODES = x
 
+def optimistic_best(resource, robot, time_left):
+    return resource + robot * time_left + ((time_left * (time_left - 1)) // 2)
+
 def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, clay_robot, obs_robot, geode_robot, time_remaining, could_buy):
     global MAX_GEODES
 
@@ -35,8 +38,13 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
 
     # If MAX_GEODES is greater than the number of geodes we can produce assuming we just
     # keep buying geode robots until the end of time, then stop this branch.
-    tmp = time_remaining * (time_remaining - 1) // 2
-    if MAX_GEODES >= geode_count + time_remaining * geode_robot + tmp:
+    if MAX_GEODES >= optimistic_best(geode_count, geode_robot, time_remaining):
+        return
+
+    # If there's no way to generate enough obsidian to craft more geode robots, then
+    # we stop this branch.
+    if blueprint[6] >= optimistic_best(obs_count, obs_robot, time_remaining):
+        MAX_GEODES = max(MAX_GEODES, geode_count + time_remaining * geode_robot)
         return
 
     # If we have enough robots to generate resources for a geode robot...
@@ -45,8 +53,7 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
         if ore_count >= blueprint[5] and obs_count >= blueprint[6]:
             # Buy geode robots until the end of time.
             # But we can easily calculate the ending number of geodes, so let's just do that.
-            tmp = time_remaining + (time_remaining - 1) // 2
-            MAX_GEODES = max(MAX_GEODES, geode_count + time_remaining * geode_robot + tmp)
+            MAX_GEODES = max(MAX_GEODES, optimistic_best(geode_count, geode_robot, time_remaining))
         else:
             # Wait a turn because next turn, we'll be ready to easy out
             ore_count += ore_robot
@@ -56,8 +63,7 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
             time_remaining -= 1
 
             # Easy out
-            tmp = time_remaining + (time_remaining - 1) // 2
-            MAX_GEODES = max(MAX_GEODES, geode_count + time_remaining * geode_robot + tmp)
+            MAX_GEODES = max(MAX_GEODES, optimistic_best(geode_count, geode_robot, time_remaining))
         return
 
     can_buy = [False, False, False, False]
