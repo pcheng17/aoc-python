@@ -30,7 +30,7 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
     MAX_GEODES = max(MAX_GEODES, geode_count)
 
     if time_remaining <= 1:
-        MAX_GEODES = geode_count + time_remaining * geode_robot
+        MAX_GEODES = max(MAX_GEODES, geode_count + time_remaining * geode_robot)
         return
 
     # If MAX_GEODES is greater than the number of geodes we can produce assuming we just
@@ -46,7 +46,7 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
             # Buy geode robots until the end of time.
             # But we can easily calculate the ending number of geodes, so let's just do that.
             tmp = time_remaining + (time_remaining - 1) // 2
-            MAX_GEODES = geode_count + time_remaining * geode_robot + tmp
+            MAX_GEODES = max(MAX_GEODES, geode_count + time_remaining * geode_robot + tmp)
         else:
             # Wait a turn because next turn, we'll be ready to easy out
             ore_count += ore_robot
@@ -57,7 +57,7 @@ def dfs(blueprint, ore_count, clay_count, obs_count, geode_count, ore_robot, cla
 
             # Easy out
             tmp = time_remaining + (time_remaining - 1) // 2
-            MAX_GEODES = geode_count + time_remaining * geode_robot + tmp
+            MAX_GEODES = max(MAX_GEODES, geode_count + time_remaining * geode_robot + tmp)
         return
 
     if ore_count >= blueprint[5] and obs_count >= blueprint[6]: 
