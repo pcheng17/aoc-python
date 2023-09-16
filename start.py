@@ -55,7 +55,8 @@ def main():
         dedent('''\
             from aocd import data
 
-
+            # This always returns a list of strings, where the strings were separated by newlines 
+            # in the input data.
             def parse(data):
                 return data.splitlines()
 
