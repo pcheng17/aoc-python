@@ -7,8 +7,7 @@ from textwrap import dedent
 
 from aocd.utils import AOC_TZ
 
-
-def main():
+def parse_args():
     now = datetime.now(tz=AOC_TZ)
     validYears = range(2015, now.year + int(now.month >= 11))
     validDays = range(1, 26)
@@ -40,7 +39,11 @@ def main():
     if args.day not in validDays or args.year not in validYears:
         parser.print_usage()
         parser.exit(1)
+    
+    return args
 
+def main():
+    args = parse_args()
     year, day = args.year, args.day
     fileToCreate = Path(__file__).parent / f'{year}' / f'q{day:02d}.py'
 

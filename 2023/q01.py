@@ -1,4 +1,5 @@
-from aocd import data
+from aocd import get_data
+data = get_data(day=1, year=2023)
 
 # This always returns a list of strings, where the strings were separated by newlines 
 # in the input data.
