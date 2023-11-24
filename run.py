@@ -13,8 +13,10 @@ def main(args):
     part = None
     if len(args) == 2:
         year, day = args
-    else:
+    elif len(args) > 2:
         year, day, *part = args
+    else:
+        sys.exit('Usage: python run.py <year> <day> [part]')
 
     if len(day) == 1:
         day = f'0{day}'
@@ -33,8 +35,7 @@ def main(args):
     print(separator)
 
     if not os.path.exists(f'./{year}/q{day}.py'):
-        print(f'Solution code doesn\'t exist.')
-        return
+        sys.exit(f'Solution code doesn\'t exist.')
 
     module = importlib.import_module(f'{year}.q{day}')
     input = module.parse(module.data)
