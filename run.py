@@ -16,7 +16,8 @@ def main(args):
     else:
         year, day, *part = args
 
-    if len(day) == 1: day = '0' + day
+    if len(day) == 1:
+        day = f'0{day}'
 
     daysTil = 25 - int(day)
     dateStr = datetime.datetime(int(year), 12, int(day)).strftime('%B %d, %Y')

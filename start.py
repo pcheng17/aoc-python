@@ -53,7 +53,8 @@ def main():
 
     fileToCreate.write_text(
         dedent('''\
-            from aocd import data
+            from aocd import get_data
+            data = get_data(day={day}, year={year})
 
             # This always returns a list of strings, where the strings were separated by newlines 
             # in the input data.
@@ -74,9 +75,9 @@ def main():
 
             if __name__ == '__main__':
                 input = parse(data)
-                print(f'Part A: {solveA(input)}')
-                print(f'Part B: {solveB(input)}')
-            ''')
+                print(f'Part A: {{solveA(input)}}')
+                print(f'Part B: {{solveB(input)}}')
+            ''').format(day=day, year=year)
         )
     return
 
