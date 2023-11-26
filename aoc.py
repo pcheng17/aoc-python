@@ -45,7 +45,7 @@ def run(year, day, parts):
         sys.exit()
 
     input_data = module.parse(module.data)
-    parts_to_run = [p.upper() for p in parts] if parts else ['A', 'B']
+    parts_to_run = set([p.upper() for element in parts for p in element]) if parts else ['A', 'B']
 
     print_banner(year, day)
 
@@ -103,10 +103,20 @@ def create(year, day):
     click.echo(f'Created {filepath}')
     return True
 
+class PartType(click.ParamType):
+    name = 'part'
+
+    def convert(self, value, param, ctx):
+        allowed_chars = {'A', 'B', 'a', 'b'}
+        if all(char in allowed_chars for char in value):
+            return value
+        else:
+            self.fail(f"{value!r} contains invalid characters. Allowed characters are: A, B, a, b.", param, ctx)
+
 @click.command()
-@click.argument('year', type=click.IntRange(2015, get_current_year()))
-@click.argument('day', type=click.IntRange(1, 25))
-@click.argument('parts', nargs=-1)
+@click.option('--year', '-y', type=click.IntRange(2015, get_current_year()), default=get_current_year())
+@click.option('--day', '-d', type=click.IntRange(1, 25), default=get_default_day())
+@click.option('--parts', '-p', type=PartType(), default='AB', help="A string that consists only of the characters 'A', 'B', 'a', and 'b'. Defaults to 'AB'.")
 def cli(year, day, parts):
     """Advent of Code CLI."""
     if not create(year, day):
