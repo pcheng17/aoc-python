@@ -32,25 +32,14 @@ def get_current_day():
 def get_default_day():
     return min(get_current_day(), 25) if datetime.now(tz=AOC_TZ).month == 12 else 1
 
-
-@click.group()
-def cli():
-    """Advent of Code CLI."""
-    pass
-
-@cli.command()
-@click.argument('year', type=click.IntRange(2015, get_current_year()))
-@click.argument('day', type=click.IntRange(1, 25))
-@click.argument('parts', nargs=-1)
 def run(year, day, parts):
     """Run the solution for the specified Advent of Code problem"""
 
-    day = f'{day:02d}'
-    if not os.path.exists(f'./{year}/q{day}.py'):
+    if not os.path.exists(f'./{year}/q{day:02d}.py'):
         sys.exit(f'Solution code doesn\'t exist.')
 
     try:
-        module = importlib.import_module(f'{year}.q{day}')
+        module = importlib.import_module(f'{year}.q{day:02d}')
     except exceptions.PuzzleLockedError as e:
         print(e)
         sys.exit()
@@ -71,24 +60,18 @@ def run(year, day, parts):
         else:
             print(f'No solution function found for Part {part}.')
 
-
-@cli.command()
-@click.argument('year', type=click.IntRange(2015, get_current_year()), required=False, default=get_current_year())
-@click.argument('day', type=click.IntRange(1, 25), required=False, default=get_default_day())
-@click.option('--force', '-f', is_flag=True, help='Create the solution scaffold even if it already exists')
-def create(year, day, force):
+def create(year, day):
     """Create the solution scaffold for a particular Advent of Code problem."""
 
-    fileToCreate = Path(__file__).parent / f'{year}' / f'q{day:02d}.py'
+    filepath = Path(__file__).parent / f'{year}' / f'q{day:02d}.py'
 
-    if not fileToCreate.parents[0].exists():
-        fileToCreate.parents[0].mkdir(parents=True, exist_ok=True)
+    if filepath.exists():
+        return False
 
-    if fileToCreate.exists():
-        if not force:
-            sys.exit(f'{fileToCreate} already exists! (use --force/-f to overwrite)')
+    if not filepath.parents[0].exists():
+        filepath.parents[0].mkdir(parents=True, exist_ok=True)
 
-    fileToCreate.write_text(
+    filepath.write_text(
         dedent('''\
             from aocd import get_data
             data = get_data(day={day}, year={year})
@@ -117,8 +100,17 @@ def create(year, day, force):
             ''').format(day=day, year=year)
         )
     
-    click.echo(f'Created {fileToCreate}')
+    click.echo(f'Created {filepath}')
+    return True
 
+@click.command()
+@click.argument('year', type=click.IntRange(2015, get_current_year()))
+@click.argument('day', type=click.IntRange(1, 25))
+@click.argument('parts', nargs=-1)
+def cli(year, day, parts):
+    """Advent of Code CLI."""
+    if not create(year, day):
+        run(year, day, parts)
 
 if __name__ == '__main__':
     cli()
