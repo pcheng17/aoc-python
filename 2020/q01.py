@@ -6,7 +6,7 @@ raw_data = get_data(day=1, year=2020)
 def parse(raw_data):
     return sorted(list(map(int, raw_data.splitlines())))
 
-def partA(input):
+def part_a(input):
     i = 0
     j = len(input) - 1
     while i < j:
@@ -17,7 +17,7 @@ def partA(input):
         else:
             j -= 1
 
-def partB(input):
+def part_b(input):
     for i in range(len(input)):
         j = i + 1
         k = len(input) - 1
@@ -28,14 +28,3 @@ def partB(input):
                 j += 1
             else:
                 k -= 1
-
-def solveA(input):
-    return partA(input)
-
-def solveB(input):
-    return partB(input)
-
-if __name__ == '__main__':
-    input = parse(raw_data)
-    print(f'Part A: {solveA(input)}')
-    print(f'Part B: {solveB(input)}')

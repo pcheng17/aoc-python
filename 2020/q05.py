@@ -14,26 +14,15 @@ def decode(string):
 def compute_id(row, col):
     return row * 8 + col
 
-def partA(input):
+def part_a(input):
     all_decoded = [decode(x) for x in input]
     ids = [compute_id(r, c) for r, c in all_decoded]
     return max(ids)
 
-def partB(input):
+def part_b(input):
     all_decoded = [decode(x) for x in input]
     ids = [compute_id(r, c) for r, c in all_decoded]
     ids = sorted(ids)
     all_seats = list(range(ids[0], ids[-1] + 1))
     missing_seats = [x for x in all_seats if x not in ids]
     return missing_seats[0]
-
-def solveA(input):
-    return partA(input)
-
-def solveB(input):
-    return partB(input)
-
-if __name__ == '__main__':
-    input = parse(raw_data)
-    print(f'Part A: {solveA(input)}')
-    print(f'Part B: {solveB(input)}')

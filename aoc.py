@@ -45,20 +45,20 @@ def run(year, day, parts):
         sys.exit()
 
     input_data = module.parse(module.raw_data)
-    parts_to_run = set([p.upper() for element in parts for p in element]) if parts else ['A', 'B']
+    parts_to_run = set([p.lower() for element in parts for p in element]) if parts else ['a', 'b']
 
     print_banner(year, day)
 
     for part in sorted(parts_to_run):
-        solve_part = f'solve{part}'
-        if hasattr(module, solve_part):
+        fn = f'part_{part}'
+        if hasattr(module, fn):
             t0 = time.time()
-            answer = getattr(module, solve_part)(input_data)
+            answer = getattr(module, fn)(input_data)
             t1 = time.time()
             elapsed_time_ms = (t1 - t0) * 1000
             print(f'🎄 Part {part}: {answer} :: {elapsed_time_ms:.2f} ms')
         else:
-            print(f'No solution function found for Part {part}.')
+            print(f'No solution function found for Part {part.upper()}.')
 
 def create(year, day):
     """Create the solution scaffold for a particular Advent of Code problem."""

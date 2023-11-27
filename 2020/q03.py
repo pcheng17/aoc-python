@@ -19,20 +19,9 @@ def traverse(input, right, down):
         col = (col + right) % num_cols
     return trees
 
-def partA(input):
+def part_a(input):
     return traverse(input, 3, 1)
 
-def partB(input):
+def part_b(input):
     slopes = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
     return reduce(mul, [traverse(input, r, d) for r, d in slopes], 1)
-
-def solveA(input):
-    return partA(input)
-
-def solveB(input):
-    return partB(input)
-
-if __name__ == '__main__':
-    input = parse(raw_data)
-    print(f'Part A: {solveA(input)}')
-    print(f'Part B: {solveB(input)}')

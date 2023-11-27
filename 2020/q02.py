@@ -13,7 +13,7 @@ def parse(input):
         data.append((a, b, letter, z))
     return data
 
-def partA(input):
+def part_a(input):
     valid = 0
     for a, b, letter, password in input:
         count = password.count(letter)
@@ -21,7 +21,7 @@ def partA(input):
             valid += 1
     return valid
 
-def partB(input):
+def part_b(input):
     valid = 0
     for a, b, letter, password in input:
         if password[a-1] == letter and password[b-1] != letter:
@@ -29,14 +29,3 @@ def partB(input):
         elif password[a-1] != letter and password[b-1] == letter:
             valid += 1
     return valid
-
-def solveA(input):
-    return partA(input)
-
-def solveB(input):
-    return partB(input)
-
-if __name__ == '__main__':
-    input = parse(raw_data)
-    print(f'Part A: {solveA(input)}')
-    print(f'Part B: {solveB(input)}')

@@ -78,27 +78,16 @@ def check_valid(passport):
     
     return True
 
-def partA(input):
+def part_a(input):
     valid = 0
     for passport in input:
         if check_present(passport):
             valid += 1
     return valid
 
-def partB(input):
+def part_b(input):
     valid = 0
     for passport in input:
         if check_present(passport) and check_valid(passport):
             valid += 1
     return valid
-
-def solveA(input):
-    return partA(input)
-
-def solveB(input):
-    return partB(input)
-
-if __name__ == '__main__':
-    input = parse(data)
-    print(f'Part A: {solveA(input)}')
-    print(f'Part B: {solveB(input)}')
