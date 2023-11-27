@@ -1,10 +1,10 @@
 from aocd import get_data
-data = get_data(day=1, year=2020)
+raw_data = get_data(day=1, year=2020)
 
 # This always returns a list of strings, where the strings were separated by newlines 
 # in the input data.
-def parse(data):
-    return sorted(list(map(int, data.splitlines())))
+def parse(raw_data):
+    return sorted(list(map(int, raw_data.splitlines())))
 
 def partA(input):
     i = 0
@@ -36,6 +36,6 @@ def solveB(input):
     return partB(input)
 
 if __name__ == '__main__':
-    input = parse(data)
+    input = parse(raw_data)
     print(f'Part A: {solveA(input)}')
     print(f'Part B: {solveB(input)}')

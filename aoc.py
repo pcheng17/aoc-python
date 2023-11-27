@@ -44,7 +44,7 @@ def run(year, day, parts):
         print(e)
         sys.exit()
 
-    input_data = module.parse(module.data)
+    input_data = module.parse(module.raw_data)
     parts_to_run = set([p.upper() for element in parts for p in element]) if parts else ['A', 'B']
 
     print_banner(year, day)
@@ -74,12 +74,12 @@ def create(year, day):
     filepath.write_text(
         dedent('''\
             from aocd import get_data
-            data = get_data(day={day}, year={year})
+            raw_data = get_data(day={day}, year={year})
 
             # This always returns a list of strings, where the strings were separated by newlines 
             # in the input data.
-            def parse(data):
-                return data.splitlines()
+            def parse(raw_data):
+                return raw_data.splitlines()
 
             def partA(input):
                 pass
@@ -94,7 +94,7 @@ def create(year, day):
                 return partB(input)
 
             if __name__ == '__main__':
-                input = parse(data)
+                input = parse(raw_data)
                 print(f'Part A: {{solveA(input)}}')
                 print(f'Part B: {{solveB(input)}}')
             ''').format(day=day, year=year)
