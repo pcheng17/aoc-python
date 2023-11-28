@@ -58,7 +58,7 @@ def run(year, day, parts):
             elapsed_time_ms = (t1 - t0) * 1000
             print(f'🎄 Part {part}: {answer} :: {elapsed_time_ms:.2f} ms')
         else:
-            print(f'No solution function found for Part {part.upper()}.')
+            print(f'No solution function found: part_{part}.')
 
 def create(year, day):
     """Create the solution scaffold for a particular Advent of Code problem."""
@@ -81,22 +81,12 @@ def create(year, day):
             def parse(raw_data):
                 return raw_data.splitlines()
 
-            def partA(input):
+            def part_a(input):
                 pass
 
-            def partB(input):
+            def part_b(input):
                 pass
 
-            def solveA(input):
-                return partA(input)
-
-            def solveB(input):
-                return partB(input)
-
-            if __name__ == '__main__':
-                input = parse(raw_data)
-                print(f'Part A: {{solveA(input)}}')
-                print(f'Part B: {{solveB(input)}}')
             ''').format(day=day, year=year)
         )
     
