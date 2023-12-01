@@ -125,8 +125,6 @@ def create(year, day):
             from aocd import get_data
             raw_data = get_data(day={day}, year={year})
 
-            # This always returns a list of strings, where the strings were separated by newlines 
-            # in the input data.
             def parse(raw_data):
                 return raw_data.splitlines()
 
