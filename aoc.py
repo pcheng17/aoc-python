@@ -7,6 +7,7 @@ import time
 
 from datetime import datetime
 from pathlib import Path
+from prettytable import PrettyTable
 from textwrap import dedent
 
 from aocd.utils import AOC_TZ
@@ -31,6 +32,20 @@ def get_current_day():
 
 def get_default_day():
     return min(get_current_day(), 25) if datetime.now(tz=AOC_TZ).month == 12 else 1
+
+def print_timing_table(timing):
+    table = PrettyTable()
+    table.field_names = ['Problem', 'Part a (ms)', 'Part b (ms)', 'Total (ms)']
+    table.align['Problem'] = 'l'
+    total_a = 0
+    total_b = 0
+    for i, (a, b) in enumerate(timing, 1):
+        table.add_row([f'Day {i}', f'{a:.2f}', f'{b:.2f}', f'{a+b:.2f}'], divider=True if i == 25 else False)
+        total_a += a
+        total_b += b
+    total = total_a + total_b
+    table.add_row(['Total (ms)', f'{total_a:.2f}', f'{total_b:.2f}', f'{total_a+total_b:.2f}'])
+    print(table)
 
 def run(year, day, parts):
     """Run the solution for the specified Advent of Code problem"""
@@ -60,6 +75,40 @@ def run(year, day, parts):
         else:
             print(f'No solution function found: part_{part}.')
 
+def benchmark(year):
+    if not os.path.exists(f'./{year}'):
+        sys.exit(f"Solution code for year {year} doesn't exist.")
+
+    timing = []
+    for day in range(1, 26):
+        if not os.path.exists(f'./{year}/q{day:02d}.py'):
+            timing.append((0, 0))
+            continue
+
+        try:
+            module = importlib.import_module(f'{year}.q{day:02d}')
+        except exceptions.PuzzleLockedError as e:
+            timing.append((0, 0))
+            continue
+
+        input_data = module.parse(module.raw_data)
+        
+        tmp = []
+        for part in ['a', 'b']:
+            fn = f'part_{part}'
+            if hasattr(module, fn):
+                t0 = time.time()
+                answer = getattr(module, fn)(input_data)
+                t1 = time.time()
+                elapsed_time_ms = (t1 - t0) * 1000
+                tmp.append(elapsed_time_ms)
+            else:
+                data.append(0)
+        
+        timing.append((tmp[0], tmp[1]))
+
+    print_timing_table(timing)
+    
 def create(year, day):
     """Create the solution scaffold for a particular Advent of Code problem."""
 
@@ -107,10 +156,14 @@ class PartType(click.ParamType):
 @click.option('--year', '-y', type=click.IntRange(2015, get_current_year()), default=get_current_year())
 @click.option('--day', '-d', type=click.IntRange(1, 25), default=get_default_day())
 @click.option('--parts', '-p', type=PartType(), default='AB', help="A string that consists only of the characters 'A', 'B', 'a', and 'b'. Defaults to 'AB'.")
-def cli(year, day, parts):
+@click.option('--bench', '-b', type=click.IntRange(2015, get_current_year()))
+def cli(year, day, parts, bench):
     """Advent of Code CLI."""
-    if not create(year, day):
-        run(year, day, parts)
+    if not bench:
+        if not create(year, day):
+            run(year, day, parts)
+    else:
+        benchmark(bench)
 
 if __name__ == '__main__':
     cli()
