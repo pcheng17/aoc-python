@@ -4,20 +4,10 @@ from collections import defaultdict
 import re
 raw_data = get_data(day=3, year=2023)
 
-# raw_data =  '467..114..\n...*......\n..35..633.\n......#...\n617*......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598..\n'
+# raw_data = '467..114..\n...*......\n..35..633.\n......#...\n617*......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598..\n'
 
 def parse(raw_data):
     return raw_data.splitlines()
-    # grid = []
-    # mapping = {}
-    # for i, line in enumerate(data):
-    #     grid.append([c for c in line])
-    #     match = re.finditer(r'([0-9]+)', line)
-    #     for m in match:
-    #         span = m.span()
-    #         for j in range(span[0], span[1]):
-    #             mapping[(i, j)] = m.group()
-    # return grid, mapping
 
 def is_symbol(c):
     return (not c.isdigit() and c != '.')
