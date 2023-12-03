@@ -133,7 +133,6 @@ def create(year, day):
 
             def part_b(input):
                 pass
-
             ''').format(day=day, year=year)
         )
     
