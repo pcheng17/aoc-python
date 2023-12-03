@@ -25,8 +25,8 @@ caveat that not every element in the grid is the same size. Sure, digits and sym
 character long, but adjacent digits needed to be understood as a larger number that took up multiple
 adjacent spots in the grid. 
 
-This was probably the first time I've ever reached for regex to solve a problem, ever. I'm pretty
-happy that the regex itself wasn't difficult, but even then, I needed to pull up a regex checker
+This was probably the first time I've ever reached for regex to solve a problem, ever. I was pretty
+relieved that the regex itself wasn't difficult, but even then, I needed to pull up a regex checker
 online to figure out the correct regex.
 
 The solution I came up with on the spot was extremely janky. For some reason, I was convinced that I
@@ -36,3 +36,6 @@ bloating my code up to approximately 150 lines just for visiting neighbors in th
 My cleaned up version, though probably not the most clean, is much nicer in comparison. The biggest
 change was doing the adjacency checks with a single nested for loop over the window (bounding box)
 of the region around each number.
+
+Thanks to people online, I was reminded of `defaultdict` from `collections`. It's a dictionary that
+allows you to specify the default value for a key that doesn't exist.
