@@ -9,9 +9,9 @@ extrmeley brute-force; I essentially duplicated the logic for finding the first 
 part A and applied it to the English representations. Then, I compared to see which one came
 first/last: digit or English representation. After solving it and discussing with a friend, we
 realized that the trick was to first do a clever string replacement to essentially replace each
-English represntation with the digit itself; it needs to be clever to account for two English
-representations sharing a letter, e.g. `eightwo`. Once the replacement was done, the problem boiled
-down to solving part A again.
+English represntation with the digit itself; it needs to be clever to account for potential cases
+where two English representations share a letter, e.g. `eightwo`. Once the replacement was done,
+the problem boiled down to solving part A again.
 
 ### Day 2
 
