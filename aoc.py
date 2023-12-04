@@ -53,6 +53,8 @@ def run(year, day, parts):
     if not os.path.exists(f'./{year}/q{day:02d}.py'):
         sys.exit(f'Solution code doesn\'t exist.')
 
+    print_banner(year, day)
+
     module = importlib.import_module(f'{year}.q{day:02d}')
 
     try:
@@ -62,8 +64,6 @@ def run(year, day, parts):
         sys.exit()
 
     parts_to_run = set([p.lower() for element in parts for p in element]) if parts else ['a', 'b']
-
-    print_banner(year, day)
 
     for part in sorted(parts_to_run):
         fn = f'part_{part}'
