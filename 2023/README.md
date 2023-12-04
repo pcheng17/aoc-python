@@ -21,7 +21,7 @@ difficult, but I'm a bit rusty with AoC-input parsing, so this problem was a goo
 ### Day 3
 
 I thought this was quite a difficult problem for Day 3. A grid-based problem on Day 3, along with
-caveat that not every element in the grid is the same size. Sure, digits and symbols are all one
+the caveat that not every element in the grid is the same size. Sure, digits and symbols are all one
 character long, but adjacent digits needed to be understood as a larger number that took up multiple
 adjacent spots in the grid. 
 
@@ -39,3 +39,17 @@ of the region around each number.
 
 Thanks to people online, I was reminded of `defaultdict` from `collections`. It's a dictionary that
 allows you to specify the default value for a key that doesn't exist.
+
+### Day 4
+
+This was much easier than Day 3, which was a relief. I made a silly mistake that I accidentally
+fixed with an extra cast to `int`. My formula for computing the number of points from a card was 
+`2 ** (len(matches) - 1)`, which is only correct if the number of matches is nonzero! Coincidentally, using the formula `int(2 ** (len(matches) - 1))` saved me because this new formula returns 0 if there are no matches. Dumb, but I admit I overlooked this edge case.
+
+Part B was pretty straightforward, but only after stopping to read the instructions more carefully.
+I don't know, something about the problem setup made it difficult for me to figure out how the game
+was changed.
+
+I got to use `defaultdict` for this one, which was opportunity to practice something I learned about
+yesterday. Turns out, one way of specifying that you want a dict where the default value is 0 is 
+`defaultdict(lambda: 0)`.
