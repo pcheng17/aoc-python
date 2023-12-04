@@ -1,8 +1,8 @@
 from aocd import get_data
-raw_data = get_data(day=2, year=2023)
 
-def parse(raw_data):
-    return raw_data.splitlines()
+
+def get_input():
+    return get_data(day=2, year=2023)
 
 def part_a(input):
     elf_data = {
@@ -12,7 +12,7 @@ def part_a(input):
     }
 
     total = 0
-    for line in input:
+    for line in input.splitlines():
         possible = True
         a, b = line.split(':')
         game_id = a.split()[1]
@@ -29,7 +29,7 @@ def part_a(input):
 
 def part_b(input):
     total = 0
-    for line in input:
+    for line in input.splitlines():
         color_dict = {
             'red': 0,
             'green': 0,

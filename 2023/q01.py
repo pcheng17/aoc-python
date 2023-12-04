@@ -1,10 +1,5 @@
 from aocd import get_data
-raw_data = get_data(day=1, year=2023)
 
-# This always returns a list of strings, where the strings were separated by newlines 
-# in the input data.
-def parse(raw_data):
-    return raw_data.splitlines()
 
 replace_dict = {
     'one':   'o1e',
@@ -17,6 +12,9 @@ replace_dict = {
     'eight': 'e8t',
     'nine':  'n9e'   
 }
+
+def get_input():
+    return get_data(day=1, year=2023)
 
 def replace_numbers(string):
     for k, v in replace_dict.items():
@@ -37,7 +35,7 @@ def find_number(string):
     return int(first + last)
 
 def part_a(input):
-    return sum([find_number(line) for line in input])
+    return sum([find_number(line) for line in input.splitlines()])
 
 def part_b(input):
-    return sum([find_number(replace_numbers(line)) for line in input])
+    return sum([find_number(replace_numbers(line)) for line in input.splitlines()])

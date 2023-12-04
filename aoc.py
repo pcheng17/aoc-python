@@ -53,13 +53,14 @@ def run(year, day, parts):
     if not os.path.exists(f'./{year}/q{day:02d}.py'):
         sys.exit(f'Solution code doesn\'t exist.')
 
+    module = importlib.import_module(f'{year}.q{day:02d}')
+
     try:
-        module = importlib.import_module(f'{year}.q{day:02d}')
+        raw_input = module.get_input()
     except exceptions.PuzzleLockedError as e:
         print(e)
         sys.exit()
 
-    input_data = module.parse(module.raw_data)
     parts_to_run = set([p.lower() for element in parts for p in element]) if parts else ['a', 'b']
 
     print_banner(year, day)
@@ -68,7 +69,7 @@ def run(year, day, parts):
         fn = f'part_{part}'
         if hasattr(module, fn):
             t0 = time.time()
-            answer = getattr(module, fn)(input_data)
+            answer = getattr(module, fn)(raw_input)
             t1 = time.time()
             elapsed_time_ms = (t1 - t0) * 1000
             print(f'🎄 Part {part}: {answer} :: {elapsed_time_ms:.2f} ms')
@@ -85,20 +86,20 @@ def benchmark(year):
             timing.append((0, 0))
             continue
 
+        module = importlib.import_module(f'{year}.q{day:02d}')
+
         try:
-            module = importlib.import_module(f'{year}.q{day:02d}')
+            raw_input = module.get_input()
         except exceptions.PuzzleLockedError as e:
             timing.append((0, 0))
             continue
 
-        input_data = module.parse(module.raw_data)
-        
         tmp = []
         for part in ['a', 'b']:
             fn = f'part_{part}'
             if hasattr(module, fn):
                 t0 = time.time()
-                answer = getattr(module, fn)(input_data)
+                answer = getattr(module, fn)(raw_input)
                 t1 = time.time()
                 elapsed_time_ms = (t1 - t0) * 1000
                 tmp.append(elapsed_time_ms)
@@ -123,16 +124,19 @@ def create(year, day):
     filepath.write_text(
         dedent('''\
             from aocd import get_data
-            raw_data = get_data(day={day}, year={year})
 
-            def parse(raw_data):
-                return raw_data.splitlines()
+            
+            def get_input():
+                return get_data(day={day}, year={year})
+ 
+            def parse(input):
+                pass
 
             def part_a(input):
-                pass
+                data = input.splitlines()
 
             def part_b(input):
-                pass
+                data = input.splitlines()
             ''').format(day=day, year=year)
         )
     
