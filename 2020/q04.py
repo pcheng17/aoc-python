@@ -1,5 +1,5 @@
 from aocd import get_data
-raw_data = get_data(day=4, year=2020)
+
 
 keys = [
     'byr',
@@ -12,8 +12,9 @@ keys = [
     # 'cid'
 ]
 
-# This always returns a list of strings, where the strings were separated by newlines 
-# in the input data.
+def get_input():
+    return get_data(day=4, year=2020)
+
 def parse(raw_data):
     raw_data_as_list = raw_data.split('\n\n')
     data = [] 
@@ -80,14 +81,14 @@ def check_valid(passport):
 
 def part_a(input):
     valid = 0
-    for passport in input:
+    for passport in parse(input):
         if check_present(passport):
             valid += 1
     return valid
 
 def part_b(input):
     valid = 0
-    for passport in input:
+    for passport in parse(input):
         if check_present(passport) and check_valid(passport):
             valid += 1
     return valid

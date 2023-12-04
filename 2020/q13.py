@@ -1,10 +1,11 @@
 from operator import mul
 from functools import reduce
 from aocd import get_data
-raw_data = get_data(day=13, year=2020)
 
-# This always returns a list of strings, where the strings were separated by newlines 
-# in the input data.
+
+def get_input():
+    return get_data(day=13, year=2020)
+
 def parse(raw_data):
     split_data = raw_data.splitlines()
     timestamp = int(split_data[0])
@@ -19,7 +20,7 @@ def inv_mod(a, n):
     return result
 
 def part_a(input):
-    timestamp, bus_ids_list = input
+    timestamp, bus_ids_list = parse(input)
     bus_ids = set([int(x) for x in bus_ids_list if x.isnumeric()])
     for t in range(timestamp, timestamp + max(bus_ids) + 1):
         for id in bus_ids:
@@ -27,7 +28,7 @@ def part_a(input):
                 return (t - timestamp) * id
 
 def part_b(input):
-    _, bus_ids_list = input
+    _, bus_ids_list = parse(input)
     crt_data = [(i, int(x)) for i, x in enumerate(bus_ids_list) if x.isnumeric()]
     crt_data_zero = [(-a % b, b) for a, b in crt_data]
 

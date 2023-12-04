@@ -1,8 +1,9 @@
 from aocd import get_data
-raw_data = get_data(day=2, year=2020)
 
-# This always returns a list of strings, where the strings were separated by newlines 
-# in the input data.
+
+def get_input():
+    return get_data(day=2, year=2020)
+
 def parse(input):
     data_list = input.splitlines()
     data = [] 
@@ -14,6 +15,7 @@ def parse(input):
     return data
 
 def part_a(input):
+    data = parse(input)
     valid = 0
     for a, b, letter, password in input:
         count = password.count(letter)
@@ -22,6 +24,7 @@ def part_a(input):
     return valid
 
 def part_b(input):
+    data = parse(input)
     valid = 0
     for a, b, letter, password in input:
         if password[a-1] == letter and password[b-1] != letter:

@@ -1,12 +1,12 @@
 from operator import mul
 from functools import reduce
 from aocd import get_data
-raw_data = get_data(day=3, year=2020)
 
-# This always returns a list of strings, where the strings were separated by newlines 
-# in the input data.
-def parse(raw_data):
-    return raw_data.splitlines()
+def get_input():
+    return get_data(day=3, year=2020)
+
+def parse(input):
+    pass
 
 def traverse(input, right, down):
     num_cols = len(input[0])
@@ -20,8 +20,8 @@ def traverse(input, right, down):
     return trees
 
 def part_a(input):
-    return traverse(input, 3, 1)
+    return traverse(input.splitlines(), 3, 1)
 
 def part_b(input):
     slopes = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
-    return reduce(mul, [traverse(input, r, d) for r, d in slopes], 1)
+    return reduce(mul, [traverse(input.splitlines(), r, d) for r, d in slopes], 1)
