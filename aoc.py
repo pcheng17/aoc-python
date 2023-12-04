@@ -156,13 +156,13 @@ class PartType(click.ParamType):
 @click.command()
 @click.option('--year', '-y', type=click.IntRange(2015, get_current_year()), default=get_current_year())
 @click.option('--day', '-d', type=click.IntRange(1, 25), default=get_default_day())
-@click.option('--parts', '-p', type=PartType(), default='AB', help="A string that consists only of the characters 'A', 'B', 'a', and 'b'. Defaults to 'AB'.")
+@click.option('--part', '-p', type=PartType(), default='AB', help="A string that consists only of the characters 'A', 'B', 'a', and 'b'. Defaults to 'AB'.")
 @click.option('--bench', '-b', type=click.IntRange(2015, get_current_year()))
-def cli(year, day, parts, bench):
+def cli(year, day, part, bench):
     """Advent of Code CLI."""
     if not bench:
         if not create(year, day):
-            run(year, day, parts)
+            run(year, day, part)
     else:
         benchmark(bench)
 
