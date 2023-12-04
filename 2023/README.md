@@ -50,6 +50,4 @@ Part B was pretty straightforward, but only after stopping to read the instructi
 I don't know, something about the problem setup made it difficult for me to figure out how the game
 was changed.
 
-I got to use `defaultdict` for this one, which was opportunity to practice something I learned about
-yesterday. Turns out, one way of specifying that you want a dict where the default value is 0 is 
-`defaultdict(lambda: 0)`.
+I got to use `defaultdict` for this one, which was an opportunity to practice something I learned about yesterday. Turns out, one way of specifying that you want a dict where the default value is 0 is `defaultdict(lambda: 0)`.
