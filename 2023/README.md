@@ -66,3 +66,15 @@ approximately 2.3 billion seeds. After chatting with a friend for probably 30 mi
 more and more convinced that we had to operate on ranges as opposed on seed values, but coming up
 with the logic to evaluate on ranges was not easy for me. The trick was to draw pictures. I should
 know this by now... draw pictures sooner rather than later because they're really helpful!
+
+A few hours later: although I got the right answer, my solution was not correct! I completely
+overlooked the case where a map doesn't contain the range for an input, in which case the input is
+left unchanged, i.e., the identity map. This means that the answer to my particular input doesn't
+require that part of the definition of the mappings. After discovering this, I was unsatisfied with
+my solution, so I tried to include the identity map case in my implementation. However, this seemed like a lot of extra nuanced logic which I wasn't sure how to write without first introducing some extra tooling, so I ultimately went with a different approach which I learned about after browsing Reddit.
+
+Instead of evaluating the maps in a forward direction to figure out the minimum output, evaluate the inverse of the maps to determine what is the smallest output that has an inverse that
+falls within a seed range. The code for this is pretty straightforward, and it produces the same
+answer that is accepted by AoC for my input. On my M1 Mac, it takes a little over 6 min to evaluate
+this version; not bad considering it's written in Python. Anyway, I'm now very curious what the
+intended solution is.
