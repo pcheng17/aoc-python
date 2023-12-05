@@ -51,3 +51,18 @@ I don't know, something about the problem setup made it difficult for me to figu
 was changed.
 
 I got to use `defaultdict` for this one, which was an opportunity to practice something I learned about yesterday. Turns out, one way of specifying that you want a dict where the default value is 0 is `defaultdict(lambda: 0)`.
+
+### Day 5
+
+Part A was pretty straightforward. However, it did take me a bit to figure out how I wanted to parse
+and organize the data. I ended up going down a few rabbit holes where I overcomplicated my solution,
+and had to backtrack. I find that this is more likely to happen when I try to define multiple
+functions to solve my problem as opposed to just throwing everything into one main function; the
+latter is definitely better (for me) for the purpose of solving these types of problems quickly.
+
+Part B was difficult for me. I naively decided to just duplicate the logic of Part A to run it per
+seed in all of the ranges, which was definitely not the right thing to do because I had
+approximately 2.3 billion seeds. After chatting with a friend for probably 30 minutes, I was
+more and more convinced that we had to operate on ranges as opposed on seed values, but coming up
+with the logic to evaluate on ranges was not easy for me. The trick was to draw pictures. I should
+know this by now... draw pictures sooner rather than later because they're really helpful!
