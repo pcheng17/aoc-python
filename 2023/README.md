@@ -78,3 +78,7 @@ falls within a seed range. The code for this is pretty straightforward, and it p
 answer that is accepted by AoC for my input. On my M1 Mac, it takes a little over 6 min to evaluate
 this version; not bad considering it's written in Python. Anyway, I'm now very curious what the
 intended solution is.
+
+### Day 6
+
+What a change in pace compared to Day 5. Brute force for this problem is good enough.
