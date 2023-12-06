@@ -1,7 +1,7 @@
 def part_a(input):
     time_str, dist_str = input.splitlines()
-    times = list(map(int, [x for x in time_str.split(':')[1].split(' ') if x != '']))
-    distances = list(map(int, [x for x in dist_str.split(':')[1].split(' ') if x != '']))
+    times = map(int, [x for x in time_str.split(':')[1].split(' ') if x.strip() != ''])
+    distances = map(int, [x for x in dist_str.split(':')[1].split(' ') if x.strip() != ''])
 
     result = 1
     for t, d in zip(times, distances):
@@ -16,8 +16,8 @@ def part_a(input):
 
 def part_b(input):
     time_str, dist_str = input.splitlines()
-    times = [x for x in time_str.split(':')[1].split(' ') if x != '']
-    distances = [x for x in dist_str.split(':')[1].split(' ') if x != '']
+    times = [x for x in time_str.split(':')[1].split(' ') if x.strip() != '']
+    distances = [x for x in dist_str.split(':')[1].split(' ') if x.strip() != '']
     time = int(''.join(times))
     distance = int(''.join(distances))
 
