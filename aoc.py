@@ -105,7 +105,7 @@ def benchmark(year):
         module = importlib.import_module(f'{year}.{day:02d}')
 
         try:
-            raw_input = module.get_input()
+            raw_input = get_input(year, day, example=False)
         except exceptions.PuzzleLockedError as e:
             timing.append((0, 0))
             continue
@@ -140,15 +140,6 @@ def create_scaffold(year, day):
 
     filepath.write_text(
         dedent('''\
-            from aocd import get_data
-
-            
-            def get_input():
-                return get_data(day={day}, year={year})
- 
-            def parse(input):
-                pass
-
             def part_a(input):
                 data = input.splitlines()
 

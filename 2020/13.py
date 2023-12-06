@@ -1,10 +1,6 @@
 from operator import mul
 from functools import reduce
-from aocd import get_data
 
-
-def get_input():
-    return get_data(day=13, year=2020)
 
 def parse(raw_data):
     split_data = raw_data.splitlines()

@@ -1,6 +1,3 @@
-from aocd import get_data
-
-
 keys = [
     'byr',
     'iyr',
@@ -11,9 +8,6 @@ keys = [
     'pid'
     # 'cid'
 ]
-
-def get_input():
-    return get_data(day=4, year=2020)
 
 def parse(raw_data):
     raw_data_as_list = raw_data.split('\n\n')

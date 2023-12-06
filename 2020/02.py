@@ -1,9 +1,3 @@
-from aocd import get_data
-
-
-def get_input():
-    return get_data(day=2, year=2020)
-
 def parse(input):
     data_list = input.splitlines()
     data = [] 

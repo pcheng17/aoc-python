@@ -1,9 +1,3 @@
-from aocd import get_data
-
-
-def get_input():
-    return get_data(day=5, year=2020)
-
 def decode(string):
     row_binary_str = ''.join(['1' if c == 'B' else '0' for c in string[0:7]])
     col_binary_str = ''.join(['1' if c == 'R' else '0' for c in string[7:]])

@@ -1,16 +1,9 @@
-from aocd import get_data
-raw_data = get_data(day=3, year=2015)
-
-# This always returns a list of strings, where the strings were separated by newlines 
-# in the input data.
-def parse(data):
-    return data.splitlines()
-
 def part_a(input):
+    data = input.splitlines()
     visited = set()
     x, y = 0, 0
     visited.add((x, y))
-    for c in input[0]:
+    for c in data[0]:
         match c:
             case '^': y += 1
             case 'v': y -= 1
@@ -20,11 +13,12 @@ def part_a(input):
     return len(visited)
 
 def part_b(input):
+    data = input.splitlines()
     visited = set()
     santa_x, santa_y = 0, 0
     robo_x, robo_y = 0, 0
     visited.add((robo_x, robo_y))
-    for i, c, in enumerate(input[0]):
+    for i, c, in enumerate(data[0]):
         if i % 2 == 0:
             match c:
                 case '^': santa_y += 1

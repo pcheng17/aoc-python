@@ -1,11 +1,3 @@
-from aocd import get_data
-raw_data = get_data(day=5, year=2015)
-
-# raw_data = 'ugknbfddgicrmopn\naaa\njchzalrnumimnmhp\nhaegwjzuvuyypxyu\ndvszwmarrgswjxmb'
-
-def parse(raw_data):
-    return raw_data.splitlines()
-
 def num_unique_vowels(string):
     vowels = 'aeiou'
     return sum(string.count(c) for c in vowels)
@@ -39,7 +31,7 @@ def is_nice_b(string):
     return has_double_pair(string) and has_sandwich(string)
     
 def part_a(input):
-    return sum(is_nice_a(line) for line in input)
+    return sum(is_nice_a(line) for line in input.splitlines())
 
 def part_b(input):
-    return sum(is_nice_b(line) for line in input)
+    return sum(is_nice_b(line) for line in input.splitlines())

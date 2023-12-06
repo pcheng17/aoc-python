@@ -1,9 +1,3 @@
-from aocd import get_data
-
-
-def get_input():
-    return get_data(day=1, year=2020)
-
 def parse(input):
     return sorted(list(map(int, input.splitlines())))
 
