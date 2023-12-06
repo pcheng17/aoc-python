@@ -1,9 +1,3 @@
-from aocd import get_data
-
-
-def get_input():
-    return get_data(day=5, year=2023)
-
 def check_for_overlap(m):
     for i in range(0, len(m)-1):
         if m[i][1] + m[i][2] - 1 >= m[i+1][1]:

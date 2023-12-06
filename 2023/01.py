@@ -1,6 +1,3 @@
-from aocd import get_data
-
-
 replace_dict = {
     'one':   'o1e',
     'two':   't2o',
@@ -12,9 +9,6 @@ replace_dict = {
     'eight': 'e8t',
     'nine':  'n9e'   
 }
-
-def get_input():
-    return get_data(day=1, year=2023)
 
 def replace_numbers(string):
     for k, v in replace_dict.items():

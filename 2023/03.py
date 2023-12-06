@@ -1,12 +1,6 @@
-from aocd import get_data
 from math import prod
 from collections import defaultdict
 import re
-
-# raw_data = '467..114..\n...*......\n..35..633.\n......#...\n617*......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598..\n'
-
-def get_input():
-    return get_data(day=3, year=2023)
 
 def is_symbol(c):
     return (not c.isdigit() and c != '.')
