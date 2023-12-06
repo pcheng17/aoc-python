@@ -81,4 +81,4 @@ intended solution is.
 
 ### Day 6
 
-What a change in pace compared to Day 5. Brute force for this problem is good enough.
+What a change of pace compared to Day 5. Brute force for this problem was good enough.
