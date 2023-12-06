@@ -1,9 +1,3 @@
-from aocd import get_data
-
-
-def get_input():
-    return get_data(day=6, year=2023)
-
 def part_a(input):
     time_str, dist_str = input.splitlines()
     times = list(map(int, [x for x in time_str.split(':')[1].split(' ') if x != '']))
