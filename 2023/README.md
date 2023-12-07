@@ -5,11 +5,10 @@
 ### Day 1
 
 Part A was fine, but part B caught me off guard. The solution I came up with in the moment was
-extrmeley brute-force; I essentially duplicated the logic for finding the first and last digits from
-part A and applied it to the English representations. Then, I compared to see which one came
+extremely brute-force; I essentially duplicated the logic for finding the first and last digits from part A and applied it to the English representations. Then, I compared to see which one came
 first/last: digit or English representation. After solving it and discussing with a friend, we
 realized that the trick was to first do a clever string replacement to essentially replace each
-English represntation with the digit itself; it needs to be clever to account for potential cases
+English representation with the digit itself; it needs to be clever to account for potential cases
 where two English representations share a letter, e.g. `eightwo`. Once the replacement was done,
 the problem boiled down to solving part A again.
 
@@ -114,7 +113,7 @@ I learned a few things by looking at other peoples' solutions:
   text = test.translate(str.maketrans('eb', 'im'))
   print(text) # 'Hi mom'
   ```
-- The characters of this string, `23456789ABCDE`, are ordered. Thus, at least for part a, one
+- The characters of this string, `23456789ABCDE`, are ordered. Thus, at least for part A, one
   could've translated `TQJKA` to `ABCDE`, and each hand would've been trivially comparable as
   strings when trying to break ties between hands of the same type.
  
