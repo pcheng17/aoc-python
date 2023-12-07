@@ -82,3 +82,22 @@ intended solution is.
 ### Day 6
 
 What a change of pace compared to Day 5. Brute force for this problem was good enough.
+
+### Day 7
+
+The problem itself was pretty straightfoward, just a bit of busy work to implement the comparisons
+properly. I realized that I could uniquely encode each type of hand into a tuple: 
+`(max card count, number of unique cards)`, and these tuples were well-ordered with respect to the
+rankings of the hands. I thought this was a neat observation.
+
+I completely tripped up on Part B though. In order to implement the "upgrade" mechanic to figure out
+the best possible hand given that J is wild, I brute forced each of the different cases: if there
+are 5 Js, 4 Js, 3 Js, etc. This worked out well except for one case. If there is only 1 J, then the
+rest of the cards in your hand can look like this, for example: AAQQ, or AAAQ. If it's the former,
+then, J can either be Q or A to produce a full house, but in the latter, J should be A to produce a
+four-of-a-kind. I missed this subtlety, even though this case (the case with 1 J) was the hardest
+for me to pin down. That should've been a hint to me to slow down and be careful.
+
+I eventually discovered this bug by scanning the sorting of the hands of my input one by one until I
+noticed something wrong. I also cooked up an example for my friend and me to run for me to compare.
+Had to really roll up my sleeves for this one...
