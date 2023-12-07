@@ -101,3 +101,20 @@ for me to pin down. That should've been a hint to me to slow down and be careful
 I eventually discovered this bug by scanning the sorting of the hands of my input one by one until I
 noticed something wrong. I also cooked up an example for my friend and me to run for me to compare.
 Had to really roll up my sleeves for this one...
+
+I learned a few things by looking at other peoples' solutions:
+
+- `translate` and `str.maketrans` are pretty neat. `translate` allows you to do
+  replacements of multiple different letters at once (instead of having to call `replace` multiple
+  times), and `str.maketrans` is responsible for creating the translation table. For example, the
+  following snippet translates `He bob` to `Hi mom`.
+
+  ```python
+  text = 'He bob'
+  text = test.translate(str.maketrans('eb', 'im'))
+  print(text) # 'Hi mom'
+  ```
+- The characters of this string, `23456789ABCDE`, are ordered. Thus, at least for part a, one
+  could've translated `TQJKA` to `ABCDE`, and each hand would've been trivially comparable as
+  strings when trying to break ties between hands of the same type.
+ 
