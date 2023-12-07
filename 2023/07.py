@@ -1,3 +1,4 @@
+from collections import defaultdict
 import functools
 
 card_rank_part_a = {
@@ -33,11 +34,10 @@ card_rank_part_b = {
 }
 
 def encode_hand_part_a(h):
-    s = set(c for c in h)
-    d = {}
-    for x in s:
-        d[x] = h.count(x)
-    return (max(d.values()), len(s))
+    d = defaultdict(lambda: 0)
+    for x in h:
+        d[x] += 1
+    return (max(d.values()), len(d))
 
 def encode_hand_part_b(h):
     njs = h.count('J')
@@ -124,13 +124,11 @@ def hand_compare_part_b(a, b):
         return 1
 
 def part_a(input):
-    data = [line.split() for line in input.splitlines()]
-    data = [(x, int(y)) for x, y in data]
+    data = [(x, int(y)) for x, y in (line.split() for line in input.splitlines())]
     data = sorted(data, key=functools.cmp_to_key(hand_compare_part_a))
     return sum(r * b for r, (h, b) in enumerate(data, 1))
 
 def part_b(input):
-    data = [line.split() for line in input.splitlines()]
-    data = [(x, int(y)) for x, y in data]
+    data = [(x, int(y)) for x, y in (line.split() for line in input.splitlines())]
     data = sorted(data, key=functools.cmp_to_key(hand_compare_part_b))
     return sum(r * b for r, (h, b) in enumerate(data, 1))
