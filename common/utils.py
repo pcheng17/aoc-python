@@ -1,3 +1,5 @@
+from math import prod
+
 def nlargest(n, iterable, key=None):
     return sorted(iterable, key=key, reverse=True)[:n]
 
@@ -19,3 +21,21 @@ def merge_intervals(intervals):
         else:
             result.append(x)
     return result
+
+def crt(eqs):
+    '''Chinese Remainder Theorem'''
+
+    def inv_mod(a, n):
+        result = 1
+        for _ in range(n - 2):
+            result *= a
+            result = result % n
+        return result
+
+    N = prod(n for _, n in eqs)
+    result = 0 
+    for a, n in eqs:
+        Ni = N // n
+        b = inv_mod(Ni, n)
+        result += a * Ni * b
+    return result % N

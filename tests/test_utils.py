@@ -47,8 +47,20 @@ def test_manhattan_dist(a, b, result):
         ([[11,15], [6,10], [1, 5]], 3),
         ([[-1,10], [5,9], [0,7]], 1),
         ([], 0)
-
     ]
 )
 def test_merge_intervals(intervals, result):
     assert len(merge_intervals(intervals)) == result
+
+@pytest.mark.parametrize(
+    'eqs, result',
+    [
+        ([(2, 3), (3, 5), (2, 7)], 23),
+        ([(2, 3), (3, 5), (2, 7), (1, 11)], 46),
+        ([(0, 3), (3, 5), (2, 7)], 3),
+        ([(0, 2), (3, 5), (2, 7), (1, 11)], 408)
+        ([(1, 6), (3, 7), (5, 19)], 157)
+    ]
+)
+def test_crt(eqs, result):
+    assert crt(eqs) == result
