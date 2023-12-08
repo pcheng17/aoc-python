@@ -117,3 +117,23 @@ I learned a few things by looking at other peoples' solutions:
   could've translated `TQJKA` to `ABCDE`, and each hand would've been trivially comparable as
   strings when trying to break ties between hands of the same type.
  
+### Day 8
+
+Not bad! Part A was super straightforward: create a dictionary of the network, and then
+walk it until we get to the destination. I was able to use some tricks I've recently learned, which
+was cool. For example, I used `translate` and `str.maketrans` from yesterday to turn my string of
+directions, `LRLRLLL..`, into 0s and 1s so I could directly index into my data structure for what
+node to move to next. I also realized that counting the number of iterations can be done with an
+`enumerate` that starts at 1, i.e., `enumerate(_, 1)`.
+
+I was initially being really dumb for Part B. It was a few quick modifications from Part A to run
+Part B, but it barely crossed my mind that the long run time for Part B meant that another approach
+was necessary; I just sat there and waited... After my friend gave me a subtle hint, I realized that
+maybe we should examine the periods of each path to see how often each path revisits a node that
+ends with Z. Luckily, the distance from `**A` to `**Z` was exactly the same as the distance from
+`**Z` back to `**Z` for all starting nodes `**A`, so the problem boiled down to finding the LCM of
+each of the periods. What I was worried about was if the distance from `**A` to `**Z` happened to be
+different from the distance from `**Z` back to `**Z`, i.e., the cycle length is different from the
+length it takes to enter the cycle. If this had been the case, then the problem would've required
+the Chinese Remainder Theorem, which would've been cool, but I'm also happy it didn't end up being
+that involved.
