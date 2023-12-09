@@ -137,3 +137,17 @@ different from the distance from `**Z` back to `**Z`, i.e., the cycle length is 
 length it takes to enter the cycle. If this had been the case, then the problem would've required
 the Chinese Remainder Theorem, which would've been cool, but I'm also happy it didn't end up being
 that involved.
+
+### Day 9
+
+I was expecting today's to be difficult since it's an odd-numbered day and a Friday night, but it
+wasn't bad - in fact, kind of fun. I spent too long during Part A trying to come up with some clever
+mathematical way of solving the problem instead of just implementing the naive solution. It wasn't
+me some time, but oh well. The naive implementation was pretty straightforward after all.
+
+For Part B, I forgot that extending to the left means that we needed to worry about the subtraction
+sign, so I spent some time trying to debug a negative sign issue... silly mistake.
+
+After chatting with a friend of mine, we realized that Part B is just Part A but with the initial
+sequences reversed, and so this is the version that I'm making available in my repo. In my opinion,
+it makes the solution for this problem way cleaner, and it looks quite nice.
