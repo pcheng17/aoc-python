@@ -1,13 +1,12 @@
 from common.utils import manhattan_dist
+from common.grid import Grid2D
+
 from itertools import combinations
 
 def solve(grid, expansion):
-    nrows = len(grid)
-    ncols = len(grid[0])
-
-    empty_rows = [i for i, row in enumerate(grid) if all(c == '.' for c in row)]
-    empty_cols = [j for j in range(ncols) if all(grid[i][j] == '.' for i in range(nrows))]
-    galaxies = [(i, j) for i in range(nrows) for j in range(ncols) if grid[i][j] == '#']
+    galaxies = grid.find_all('#')
+    empty_rows = set(range(grid.rows())) - set(i for i, _ in galaxies)
+    empty_cols = set(range(grid.cols())) - set(j for _, j in galaxies)
     
     total = 0
     for g1, g2 in combinations(galaxies, 2):
@@ -25,9 +24,7 @@ def solve(grid, expansion):
     return total
 
 def part_a(input):
-    grid = [[c for c in line] for line in input.splitlines()]
-    return solve(grid, 2)
+    return solve(Grid2D(input), 2)
 
 def part_b(input):
-    grid = [[c for c in line] for line in input.splitlines()]
-    return solve(grid, 1000000)
+    return solve(Grid2D(input), 1000000)
