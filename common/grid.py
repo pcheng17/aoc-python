@@ -1,8 +1,8 @@
 class Grid2D:
-    def __init__(self, rows: int, cols: int, init=None):
+    def __init__(self, rows: int, cols: int, val=None):
         self._rows = rows
         self._cols = cols
-        self._data = [[init for _ in range(self._rows)] for _ in range(self._cols)]
+        self._data = [[val for _ in range(self._rows)] for _ in range(self._cols)]
 
     def __init__(self, data):
         self._data = data

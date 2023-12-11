@@ -3,7 +3,7 @@ import pytest
 
 
 def test_contruction():
-    grid = Grid2D(3, 5, init=0)
+    grid = Grid2D(3, 5, val=0)
     assert grid.rows() == 3
     assert grid.cols() == 5
     for i in range(3):
