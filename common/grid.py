@@ -14,7 +14,7 @@ class Grid2D:
         if len(delim) == 1:
             data = [[c for c in row] for row in string.split(delim)] 
         else:
-            rdelim, cdelim = *delim
+            rdelim, cdelim = [*delim]
             data = [[c for c in row.split(cdelim)] for row in string.split(rdelim)]
         return cls(data)
     
@@ -23,7 +23,7 @@ class Grid2D:
         if len(delim) == 1:
             data = [[int(c) for c in row] for row in string.split(row_delim)] 
         else:
-            rdelim, cdelim = *delim
+            rdelim, cdelim = [*delim]
             data = [[int(c) for c in row.split(cdelim)] for row in string.split(rdelim)]
         return cls(data)
     
