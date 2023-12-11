@@ -1,4 +1,5 @@
 from common.utils import manhattan_dist
+from itertools import combinations
 
 def solve(grid, expansion):
     nrows = len(grid)
@@ -14,32 +15,22 @@ def solve(grid, expansion):
         if all(grid[i][j] == '.' for i in range(nrows)):
             empty_cols.append(j)
     
-    galaxies = []
-    for i, row in enumerate(grid):
-        for j, col in enumerate(row):
-            if grid[i][j] == '#':
-                galaxies.append((i, j))
+    galaxies = [(i, j) for i in range(nrows) for j in range(ncols) if grid[i][j] == '#']
     ngalaxies = len(galaxies)
     
     total = 0
-    for i in range(ngalaxies):
-        for j in range(i+1, ngalaxies):
-            g1 = galaxies[i]  
-            g2 = galaxies[j]
-            dist = manhattan_dist(g1, g2) 
+    for g1, g2 in combinations(galaxies, 2):
+        total += manhattan_dist(g1, g2) 
 
-            x1 = min(g1[0], g2[0])
-            x2 = max(g1[0], g2[0])
-            
-            y1 = min(g1[1], g2[1])
-            y2 = max(g1[1], g2[1]) 
+        x1, x2 = min(g1[0], g2[0]), max(g1[0], g2[0])
+        y1, y2 = min(g1[1], g2[1]), max(g1[1], g2[1]) 
 
-            drows = sum(int(x1 < r < x2) for r in empty_rows)
-            dcols = sum(int(y1 < c < y2) for c in empty_cols) 
-            
-            dist += (expansion - 1) * drows
-            dist += (expansion - 1) * dcols
-            total += dist
+        drows = sum(int(x1 < r < x2) for r in empty_rows)
+        dcols = sum(int(y1 < c < y2) for c in empty_cols) 
+        
+        total += (expansion - 1) * drows
+        total += (expansion - 1) * dcols
+
     return total
 
 def part_a(input):
