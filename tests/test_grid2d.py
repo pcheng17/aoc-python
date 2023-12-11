@@ -22,7 +22,7 @@ def test_contruction():
     assert grid.cols() == 3
     for i in range(3):
         for j in range(3):
-            assert grid(i, j) == 3 * i + j
+            assert grid(i, j) == 3 * i + j + 1
 
     grid = Grid2D.from_str('1,2,3\n4,5,6', '\n,')
     assert grid.rows() == 2
