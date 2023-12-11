@@ -5,18 +5,9 @@ def solve(grid, expansion):
     nrows = len(grid)
     ncols = len(grid[0])
 
-    empty_rows = []
-    for i, row in enumerate(grid):
-        if all(c == '.' for c in row):
-            empty_rows.append(i)
-        
-    empty_cols = []
-    for j in range(ncols):
-        if all(grid[i][j] == '.' for i in range(nrows)):
-            empty_cols.append(j)
-    
+    empty_rows = [i for i, row in enumerate(grid) if all(c == '.' for c in row)]
+    empty_cols = [j for j in range(ncols) if all(grid[i][j] == '.' for i in range(nrows))]
     galaxies = [(i, j) for i in range(nrows) for j in range(ncols) if grid[i][j] == '#']
-    ngalaxies = len(galaxies)
     
     total = 0
     for g1, g2 in combinations(galaxies, 2):
