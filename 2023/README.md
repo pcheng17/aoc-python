@@ -151,3 +151,24 @@ sign, so I spent some time trying to debug a negative sign issue... silly mistak
 After chatting with a friend of mine, we realized that Part B is just Part A but with the initial
 sequences reversed, and so this is the version that I'm making available in my repo. In my opinion,
 it makes the solution for this problem way cleaner, and it looks quite nice.
+
+### Day 10
+
+Wow, this was a difficult day. I initially struggled way too much on writing a recursive solution,
+constantly into the recursion limit in Python. I eventually decided to just cut my losses and
+rewrite the traversal logic as a while loop, and it pretty much worked on the first try. I think my
+lesson learned here is to not always just reach for recursion immediately, especially when the
+problem setup is not super complicated. 
+
+Part B was quite interesting, and I really liked the problem because of Part B. I worked with a
+friend of mine (Bonsoon) to figure out how we might want to go about it, and I must admit that I
+really like the solution we came up with. Basically, the idea is to shoot rays at the path and count
+how many times the ray intersects the pipes. If it has intersected an even number of times when it
+reaches an empty spot in the grid, then the empty spot must be outside of the loop, and if it has
+intersect an odd number of times when it reaches an empty spot in the grid, then the empty spot must
+be inside of the loop. To perform this computation, we realized that we can drop all `-`
+characters because they aren't important in this computation. We can also drop all `F7` and `LJ`
+pairs because they would add 2 to the intersection count, which doesn't change the parity of the
+number. Finally, every instance of `FJ`, `L7`, and `|` all count as 1 intersection, and done!
+
+What a fun problem!
