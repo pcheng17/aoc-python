@@ -172,3 +172,10 @@ pairs because they would add 2 to the intersection count, which doesn't change t
 number. Finally, every instance of `FJ`, `L7`, and `|` all count as 1 intersection, and done!
 
 What a fun problem!
+
+### Day 11
+
+Nice simple day. I got screwed over by placing my `return` statement in the wrong level of
+`for`-loops... thanks Python.
+
+But, I thought it was neat that I got to use my `manhattan_dist` function that I wrote last year!
