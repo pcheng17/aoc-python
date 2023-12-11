@@ -1,28 +1,30 @@
 class Grid2D:
-    def __init__(self, rows: int, cols: int, val=None):
-        self._rows = rows
-        self._cols = cols
-        self._data = [[val for _ in range(self._rows)] for _ in range(self._cols)]
-
     def __init__(self, data):
         self._data = data
         self._rows = len(data)
         self._cols = len(data[0])
+    
+    @classmethod
+    def new(cls, rows: int, cols: int, val=None):
+        data = [[val for _ in range(cols)] for _ in range(rows)]
+        return cls(data)
 
     @classmethod
-    def from_str(cls, string: str, row_delim='\n', col_delim=None):
-        if col_delim is None:
-            data = [[c for c in row] for row in string.split(row_delim)] 
+    def from_str(cls, string: str, delim='\n'):
+        if len(delim) == 1:
+            data = [[c for c in row] for row in string.split(delim)] 
         else:
-            data = [[c for c in row.split(col_delim)] for row in string.split(row_delim)]
+            rdelim, cdelim = *delim
+            data = [[c for c in row.split(cdelim)] for row in string.split(rdelim)]
         return cls(data)
     
     @classmethod
-    def from_str_to_int(cls, string: str, row_delim='\n', col_delim=None):
-        if col_delim is None:
+    def from_str_to_int(cls, string: str, delim='\n'):
+        if len(delim) == 1:
             data = [[int(c) for c in row] for row in string.split(row_delim)] 
         else:
-            data = [[int(c) for c in row.split(col_delim)] for row in string.split(row_delim)]
+            rdelim, cdelim = *delim
+            data = [[int(c) for c in row.split(cdelim)] for row in string.split(rdelim)]
         return cls(data)
     
     def rows(self):
