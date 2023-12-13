@@ -6,7 +6,7 @@ def nlargest(n, iterable, key=None):
 def nsmallest(n, iterable, key=None):
     return sorted(iterable, key=key, reverse=False)[:n]
 
-def manhattan_dist(a, b):
+def manhattan(a, b):
     return sum(abs(x-y) for x, y in zip(a, b))
 
 def merge_intervals(intervals):

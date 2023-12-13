@@ -1,4 +1,4 @@
-from common.utils import manhattan_dist
+from common.utils import manhattan
 from common.grid import Grid2D
 
 from itertools import combinations
@@ -10,7 +10,7 @@ def solve(grid, expansion):
     
     total = 0
     for g1, g2 in combinations(galaxies, 2):
-        total += manhattan_dist(g1, g2) 
+        total += manhattan(g1, g2) 
 
         x1, x2 = min(g1[0], g2[0]), max(g1[0], g2[0])
         y1, y2 = min(g1[1], g2[1]), max(g1[1], g2[1]) 

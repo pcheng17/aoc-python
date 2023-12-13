@@ -37,8 +37,8 @@ def test_nsmallest(n, iterable, key, result):
         (range(10), range(10), 0)
    ]
 )
-def test_manhattan_dist(a, b, result):
-    assert manhattan_dist(a, b) == result
+def test_manhattan(a, b, result):
+    assert manhattan(a, b) == result
 
 @pytest.mark.parametrize(
     'intervals, result',

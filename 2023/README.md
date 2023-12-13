@@ -178,7 +178,7 @@ What a fun problem!
 Nice simple day. I got screwed over by placing my `return` statement in the wrong level of
 `for`-loops... thanks Python.
 
-But, I thought it was neat that I got to use my `manhattan_dist` function that I wrote last year!
+But, I thought it was neat that I got to use my `manhattan` function that I wrote last year!
 
 I also learned that `itertools` has a `combinations` function, which produces all combinations of
 items in the input iterable.
