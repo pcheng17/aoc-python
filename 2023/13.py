@@ -8,12 +8,12 @@ def scan(grid, s):
             return i+1
     return 0
 
+# Vertical reflection + 100 * horizontal reflection
+
 def part_a(input):
     grids = [group.split() for group in input.split('\n\n')]
-    # Vertical reflection + 100 * horizontal reflection
     return sum(scan([*zip(*g)], 0) + 100 * scan(g, 0) for g in grids)
 
 def part_b(input):
     grids = [group.split() for group in input.split('\n\n')]
-    # Vertical reflection + 100 * horizontal reflection
     return sum(scan([*zip(*g)], 1) + 100 * scan(g, 1) for g in grids)
