@@ -182,3 +182,37 @@ But, I thought it was neat that I got to use my `manhattan_dist` function that I
 
 I also learned that `itertools` has a `combinations` function, which produces all combinations of
 items in the input iterable.
+
+### Day 12
+
+Oof, this one was hard. I initially started going down the route of brute-forcing it, which would've
+worked for Part A (thanks, Bonsoon, for being faster than me at it so you could confirm for me), but
+per his warning, I did not end up spending time doing brute force because of Part B. We then spent
+a hours brainstorming how to properly solve this problem, and eventually landed on the idea of
+dynamic programming/memoization, the latter of which is what we ended up implementing. Sure enough,
+after a lot of debugging, it all worked out.
+
+In retrospect, this problem definitely requires something like memoization, which takes care of
+exploring the tail end of the branch of this pattern. It has the same flavor as some of the problems from last year's Advent of Code that also required memoization. I should've noticed the pattern sooner.
+
+I finally learned how to use `@cache` from `functools` to memoize a function. I've seen it used
+before but never really understood how it worked. It's pretty neat - basically, a wrapper around
+your function to automagically memoize calls to it as long as the arguments are immutable, e.g.,
+`tuple` instead of `list`. I swapped out my own memoization implementation for this one, and it
+worked like a charm.
+
+### Day 13
+
+Pretty straightforward! I think I really lucked out with using Python for this problem because of
+the nice properties of `zip` in that it stops when the shortest iterable is exhausted. Thus, I
+didn't need to worry about the different lengths of the mirrored halves.
+
+I think I kind of lucked out on Part B. I started going down the route of trying to figure out how
+to detect the smudge while checking for where the grid is mirrored, but then somehow realized that I
+can just search for an "almost-mirror" where the two sides have a Levenshtein distance of 1.
+
+Interesting observation: I tried to use my own `Grid2D` class for this, but immediately scrapped
+that idea because I was worried that working with the data from behind an interface would make logic
+too messy... Maybe designing classes for these types of problems isn't the best idea.
+
+Also, I got my best ranking so far on Part A - Rank 387!
