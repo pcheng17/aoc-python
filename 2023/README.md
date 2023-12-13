@@ -216,3 +216,6 @@ that idea because I was worried that working with the data from behind an interf
 too messy... Maybe designing classes for these types of problems isn't the best idea.
 
 Also, I got my best ranking so far on Part A - Rank 387!
+
+Edit: I just learned something new! `*zip(*grid)` is a mind-blowing way to transpose a 2D array... I
+need to keep this in my back pocket.
