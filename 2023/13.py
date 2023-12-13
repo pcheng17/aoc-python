@@ -45,8 +45,7 @@ def scan_vertical_b(grid):
         for a, b in zip(range(j, -1, -1), range(j+1, cols)):
             col1 = [grid[i][a] for i in range(rows)]
             col2 = [grid[i][b] for i in range(rows)]
-            if col1 != col2:
-                lev += levenshtein(col1, col2)
+            lev += levenshtein(col1, col2)
         if lev == 1:
             return j + 1
     return 0
@@ -58,8 +57,7 @@ def scan_horizontal_b(grid):
         mirror = True
         lev = 0
         for a, b in zip(range(i, -1, -1), range(i+1, rows)):
-            if grid[a] != grid[b]:
-                lev += levenshtein(grid[a], grid[b])
+            lev += levenshtein(grid[a], grid[b])
         if lev == 1:
             return i+1
     return 0
