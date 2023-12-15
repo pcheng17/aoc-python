@@ -219,3 +219,40 @@ Also, I got my best ranking so far on Part A - Rank 387!
 
 Edit: I just learned something new! `*zip(*grid)` is a mind-blowing way to transpose a 2D array... I
 need to keep this in my back pocket.
+
+### Day 14
+
+For Part A, I think I was being a little too clever in my first pass at the problem. Instead of just
+brute-forcing the movement of each stone and checking for collisions, I tried to take a sweep-like
+approach where, for all the rocks in one row, I send them down as far as they'll go in one step.
+It worked, but it required a lot of index bookeeping to keep track of how far in each column a rock
+could travel as it slid. 
+
+In Part B, I was definitely being way too clever for my own good. Because I had just learned about
+how to tranpose a grid by using `*zip(*grid)`, I thought that I could literally rotate the grid and
+then use the same logic from Part A of sliding north to be able to slide in every direction. This
+actually did work, and it was pretty cool to not have to write any extra code for the other
+directions, but I ultimately wasted a ton of time debugging my scoring logic. I forgot that the grid
+should be oriented in the original orientation for scoring, which meant that I needed to rotate the
+grid one more time (after sliding to the East) before scoring. This bug took me way too long to
+discover...
+
+In any case, my rewrite of the solution uses very similar ideas. However, I've replaced the sliding
+logic with a very clever string-only solution. Basically, sliding to the left means to replace `.O`
+with `O.`, and sliding to the right means to replace `O.` with `.O`. So cool! And then to slide
+North or South, you can tranpose the grid and then slide left or right, respectively. In this
+version, I do remember to flip the grid back to its original orientation before scoring.
+
+My friend also developed a nice way of determining period lengths of the scoring. There is basically
+no way of running the simulation out to one billion cycles, so the idea is to figure out at what
+point the scores became periodic, and then to extrapolate this out to one billion to determine the
+answer. Essentially, it boils down to storing a map for the history, where the keys are the `grid`
+itself, and the keys are `(cycle index, score)`. The moment a grid is repeated is when we've
+discovered one period of the sequence, and we can determine our answer from there.
+
+### Day 15
+
+Easy day! Part B was basically all reading comprehension.
+
+I thought it was funny how the problem is about hashmaps, and yet, I didn't end up using a `dict` at
+all. Since the boxes were contiguously indexed, I opted for a list to store the boxes.
