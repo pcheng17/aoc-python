@@ -256,3 +256,12 @@ Easy day! Part B was basically all reading comprehension.
 
 I thought it was funny how the problem is about hashmaps, and yet, I didn't end up using a `dict` at
 all. Since the boxes were contiguously indexed, I opted for a list to store the boxes.
+
+### Day 16
+
+Not bad. At first, I was a little worried that brute forcing the rules would be a pain, but it
+turned out just fine. I opted for a BFS approach, where my set of visited nodes also contained
+information about the direction in which each node was visited. Without it, then you might end up
+loosing paths because nodes can be visited from different directions.
+
+Brute forcing Part B was also fine, nothing special.
