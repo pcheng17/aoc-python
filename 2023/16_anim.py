@@ -112,6 +112,6 @@ def main(stdscr):
         if not frontier:
             time.sleep(5)
         draw_frame(stdscr, grid, frontier, visited)
-        time.sleep(0.1)
+        time.sleep(0.04)
 
 curses.wrapper(main)
