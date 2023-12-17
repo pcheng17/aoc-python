@@ -58,9 +58,7 @@ def solve(data, start):
                     next_frontier.append((i, j+1, '>'))
         
         # Filter
-        next_frontier = [n for n in next_frontier if 0 <= n[0] < rows]
-        next_frontier = [n for n in next_frontier if 0 <= n[1] < cols]
-        next_frontier = [n for n in next_frontier if n not in visited]
+        next_frontier = [n for n in next_frontier if 0 <= n[0] < rows and 0 <= n[1] < cols and n not in visited]
         for n in next_frontier:
             visited.add(n)
         frontier = next_frontier 
@@ -88,5 +86,3 @@ def part_b(input):
     right = max(solve(data, (i, cols-1, '<')) for i in range(rows))
 
     return max(top, bottom, left, right)
-
-

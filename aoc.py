@@ -52,6 +52,16 @@ def print_timing_table(timing):
     print(table)
 
 
+def solve_and_time(func):
+    def wrapper(raw_input):
+        t0 = time.time()
+        answer = func(raw_input)
+        t1 = time.time()
+        elapsed_time_ms = (t1 - t0) * 1000
+        return answer, elapsed_time_ms
+    return wrapper
+
+
 def get_input(year, day, example = True):
     if example:
         with open(f'./{year}/examples/{day:02d}.txt', 'r') as f:
@@ -83,11 +93,8 @@ def run(year, day, parts, example):
     for part in sorted(parts_to_run):
         fn = f'part_{part}'
         if hasattr(module, fn):
-            t0 = time.time()
-            answer = getattr(module, fn)(raw_input)
-            t1 = time.time()
-            elapsed_time_ms = (t1 - t0) * 1000
-            print(f'🎄 Part {part}: {answer} :: {elapsed_time_ms:.2f} ms')
+            answer, elapsed_ms = solve_and_time(getattr(module, fn))(raw_input)
+            print(f'🎄 Part {part}: {answer} :: {elapsed_ms:.2f} ms')
         else:
             print(f'No solution function found: part_{part}.')
 
@@ -111,16 +118,12 @@ def benchmark(year):
             continue
 
         tmp = []
-        for part in ['a', 'b']:
-            fn = f'part_{part}'
+        for fn  in ['part_a', 'part_b']:
             if hasattr(module, fn):
-                t0 = time.time()
-                answer = getattr(module, fn)(raw_input)
-                t1 = time.time()
-                elapsed_time_ms = (t1 - t0) * 1000
-                tmp.append(elapsed_time_ms)
+                _, elapsed_ms = solve_and_time(getattr(module, fn))(raw_input)
+                tmp.append(elapsed_ms)
             else:
-                data.append(0)
+                tmp.append(0)
         
         timing.append((tmp[0], tmp[1]))
 
