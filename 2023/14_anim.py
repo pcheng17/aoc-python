@@ -44,7 +44,7 @@ def main(stdscr):
     # Hide cursor
     curses.curs_set(0)
 
-    with open(f'./2023/examples/14.txt', 'r') as f:
+    with open(f'./2023/examples/14_real.txt', 'r') as f:
         data = f.read()
         if len(data) == 0:
             raise ValueError('Example file is empty')
@@ -60,6 +60,6 @@ def main(stdscr):
                 grid_new = advance_frame(grid, d)
                 if grid == grid_new:
                     break
-                grid = grid_new 
+                grid = grid_new
 
 curses.wrapper(main)

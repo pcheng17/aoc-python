@@ -22,7 +22,7 @@ difficult, but I'm a bit rusty with AoC-input parsing, so this problem was a goo
 I thought this was quite a difficult problem for Day 3. A grid-based problem on Day 3, along with
 the caveat that not every element in the grid is the same size. Sure, digits and symbols are all one
 character long, but adjacent digits needed to be understood as a larger number that took up multiple
-adjacent spots in the grid. 
+adjacent spots in the grid.
 
 This was probably the first time I've ever reached for regex to solve a problem, ever. I was pretty
 relieved that the regex itself wasn't difficult, but even then, I needed to pull up a regex checker
@@ -42,7 +42,7 @@ allows you to specify the default value for a key that doesn't exist.
 ### Day 4
 
 This was much easier than Day 3, which was a relief. I made a silly mistake that I accidentally
-fixed with an extra cast to `int`. My formula for computing the number of points from a card was 
+fixed with an extra cast to `int`. My formula for computing the number of points from a card was
 `2 ** (len(matches) - 1)`, which is only correct if the number of matches is nonzero! Coincidentally, using the formula `int(2 ** (len(matches) - 1))` saved me because this new formula returns 0 if there are no matches. Dumb, but I admit I overlooked this edge case.
 
 Part B was pretty straightforward, but only after stopping to read the instructions more carefully.
@@ -85,7 +85,7 @@ What a change of pace compared to Day 5. Brute force for this problem was good e
 ### Day 7
 
 The problem itself was pretty straightfoward, just a bit of busy work to implement the comparisons
-properly. I realized that I could uniquely encode each type of hand into a tuple: 
+properly. I realized that I could uniquely encode each type of hand into a tuple:
 `(max card count, number of unique cards)`, and these tuples were well-ordered with respect to the
 rankings of the hands. I thought this was a neat observation.
 
@@ -116,7 +116,7 @@ I learned a few things by looking at other peoples' solutions:
 - The characters of this string, `23456789ABCDE`, are ordered. Thus, at least for part A, one
   could've translated `TQJKA` to `ABCDE`, and each hand would've been trivially comparable as
   strings when trying to break ties between hands of the same type.
- 
+
 ### Day 8
 
 Not bad! Part A was super straightforward: create a dictionary of the network, and then
@@ -158,7 +158,7 @@ Wow, this was a difficult day. I initially struggled way too much on writing a r
 constantly into the recursion limit in Python. I eventually decided to just cut my losses and
 rewrite the traversal logic as a while loop, and it pretty much worked on the first try. I think my
 lesson learned here is to not always just reach for recursion immediately, especially when the
-problem setup is not super complicated. 
+problem setup is not super complicated.
 
 Part B was quite interesting, and I really liked the problem because of Part B. I worked with a
 friend of mine (Bonsoon) to figure out how we might want to go about it, and I must admit that I
@@ -226,7 +226,7 @@ For Part A, I think I was being a little too clever in my first pass at the prob
 brute-forcing the movement of each stone and checking for collisions, I tried to take a sweep-like
 approach where, for all the rocks in one row, I send them down as far as they'll go in one step.
 It worked, but it required a lot of index bookeeping to keep track of how far in each column a rock
-could travel as it slid. 
+could travel as it slid.
 
 In Part B, I was definitely being way too clever for my own good. Because I had just learned about
 how to tranpose a grid by using `*zip(*grid)`, I thought that I could literally rotate the grid and
@@ -265,3 +265,11 @@ information about the direction in which each node was visited. Without it, then
 loosing paths because nodes can be visited from different directions.
 
 Brute forcing Part B was also fine, nothing special.
+
+### Day 17
+
+### Day 18
+
+### Day 19
+
+### Day 20
