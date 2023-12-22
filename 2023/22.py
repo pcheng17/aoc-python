@@ -1,5 +1,19 @@
 from collections import defaultdict
 
+def parse(input):
+    data = input.splitlines()
+    bricks = []
+    for i, row in enumerate(data):
+        a, b = row.split('~')
+        at = tuple(map(int, a.split(',')))
+        bt = tuple(map(int, b.split(',')))
+        if is_lt(at, bt):
+            bricks.append((at, bt, i))
+        else:
+            bricks.append((bt, at, i))
+    bricks.sort(key=lambda x: x[0][2])
+    return bricks
+
 def is_lt(a, b):
     if a[2] < b[2]:
         return True
@@ -39,28 +53,13 @@ def simulate(bricks):
         fallen_bricks.append(((a[0], a[1], highest + 1), (b[0], b[1], new_highest), idx))
     return fallen_bricks
 
-def part_a(input):
-    data = input.splitlines()
-    bricks = []
-    for i, row in enumerate(data):
-        a, b = row.split('~')
-        at = tuple(map(int, a.split(',')))
-        bt = tuple(map(int, b.split(',')))
-        if is_lt(at, bt):
-            bricks.append((at, bt, i))
-        else:
-            bricks.append((bt, at, i))
-
-    bricks.sort(key=lambda x: x[0][2])
-
-    fallen_bricks = simulate(bricks)
-
-    min_height = min(x[0][2] for x in fallen_bricks)
-    max_height = max(x[1][2] for x in fallen_bricks)
+def find_can_safely_remove(bricks):
+    min_height = min(x[0][2] for x in bricks)
+    max_height = max(x[1][2] for x in bricks)
 
     height_map = defaultdict(list)
     for h in range(min_height, max_height + 1):
-        for b in fallen_bricks:
+        for b in bricks:
             if b[0][2] <= h <= b[1][2]:
                 height_map[h].append(b)
 
@@ -80,49 +79,14 @@ def part_a(input):
     for b in height_map[max_height]:
         can_remove.add(b)
 
-    can_remove_list = list(can_remove)
-    can_remove_list.sort(key=lambda x: x[2])
-    return len(can_remove)
+    return can_remove
+
+def part_a(input):
+    return len(find_can_safely_remove(simulate(parse(input))))
 
 def part_b(input):
-    data = input.splitlines()
-    bricks = []
-    for i, row in enumerate(data):
-        a, b = row.split('~')
-        at = tuple(map(int, a.split(',')))
-        bt = tuple(map(int, b.split(',')))
-        if is_lt(at, bt):
-            bricks.append((at, bt, i))
-        else:
-            bricks.append((bt, at, i))
-    bricks.sort(key=lambda x: x[0][2])
-
-    fallen_bricks = simulate(bricks)
-
-    min_height = min(x[0][2] for x in fallen_bricks)
-    max_height = max(x[1][2] for x in fallen_bricks)
-
-    height_map = defaultdict(list)
-    for h in range(min_height, max_height + 1):
-        for b in fallen_bricks:
-            if b[0][2] <= h <= b[1][2]:
-                height_map[h].append(b)
-
-    can_remove = set()
-    for h in range(max_height, min_height, -1):
-        ht = height_map[h] # list of bricks
-        hb = height_map[h-1] # list of bricks
-
-        # Construct a graph of dependencies
-        p2c = defaultdict(list)
-        for bt in ht:
-            p2c[bt].extend([bb for bb in hb if support(bt, bb)])
-
-        # Find bricks that can be removed
-        can_remove.update([bb for bb in hb if not is_only_child(p2c, bb)])
-
-    for b in height_map[max_height]:
-        can_remove.add(b)
+    fallen_bricks = simulate(parse(input))
+    can_remove = find_can_safely_remove(fallen_bricks)
 
     to_disintegrate = [b for b in fallen_bricks if b not in can_remove]
     fallen_bricks_set = set(fallen_bricks)
@@ -133,10 +97,3 @@ def part_b(input):
         total += (len(fallen_bricks_set - new_bricks_set) - 1)
 
     return total
-
-
-
-
-
-
-
