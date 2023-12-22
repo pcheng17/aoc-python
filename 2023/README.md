@@ -273,3 +273,66 @@ Brute forcing Part B was also fine, nothing special.
 ### Day 19
 
 ### Day 20
+
+This problem was fun! Part A was pretty straightforward, despite taking awhile to fully
+understand the problem. I had to spend like 15 minutes chatting with Bonsoon about it until we were
+totally convinced we knew what was happening.
+
+Part B was great. Upon reading the problem, I immediately thought "oh man, how do I even do
+this...??" Usually, problems that require us to solve the problem out to some very large number must
+have some kind of periodic behavior. However, the twist with this one was that we needed to find
+the first time at which a certain condition would happen, which could be arbitrarily large, so
+finding a period... is basically just solving the problem entirely.
+
+Once Bonsoon got to Part B, we spent quite a long time discussing how to solve this. We started to
+realize that there is some periodic behavior happening within the problem, but for the longest
+time, much of the behavior we observed was not helpful. Finally, we realized that we were looking
+way too "deep" into the problem, and the periodicity that we needed was actually in the penultimate
+state of the logic gates of the problem: the four penultimate logic gates that fed into the final
+one needed to all be `HIGH` in order for the condition of the problem to be satisified, which meant
+that, if we could determine the period of each of these four logic gates, we could use an LCM to
+determine the period of the entire system.
+
+Luckily, much like an earlier problem this year, the periodicity was "simple" enough in that, an LCM
+was sufficient for solving the problem, and we didn't have to reach for the Chinese Remainder Theorem.
+
+### Day 21
+
+Part A was vanilla BFS.
+
+Part B, however, was weird. To be honest, I'm not sure if I'm really a fan of this problem, mostly
+because I'm not sure I thorougly understand what's going on. Basically, it turns out that the number
+of reachable spots in the grid every 131 steps, where 131 is the size of the grid, follows a
+quadratic curve. Bonsoon, who helped me with this problem, was only able to figure this out after a
+ton tinkering around with the problem. Once the right family of values was found, interpolating the
+data with a quadratic function and then evaluating it at the appropriate x-value produced the right
+answer.
+
+I can kind of believe that this works? Maybe? ::shrug::
+
+### Day 22
+
+Last year, we had Tetris. This year, it was Jenga. Despite having to use quite a lot of brain power,
+I thought this one was quite interesting. It was freshing after the few puzzle-like ones that we've
+had recently, where this one was more of a programming challenge. Part A took me about 3 hours to
+complete because of a silly little bug that only showed itself on very specific types on inputs.
+Instead of simulating the stacking of the bricks one "time step" at a time, I decided to just
+directly compute how far each brick could travel before it would hit either the ground or another
+block. However, in updating the heightfield of the resulting pile, I forgot to account for the fact
+that the newly settled block could have height greater than one... so dumb.
+
+The logic to determine if one block could support another was reminiscent of a typical interview
+problem that I've both given and received, which is, how do you determine when two axis-aligned
+boxes overlap? If one block were to support another, that means that if you were to look at the
+configuration from the top down, the two blocks would have to overlap.
+
+The logic to determine whether or not a block could be removed without causing others to topple was
+also quite interesting. I used a graph-based approach, where a (child) block can only be removed if
+it is not the only child of a parent block.
+
+For Part B, I started by trying to build a graph for the dependency tree of the entire stack. Then,
+to compute how many blocks would tumble when a particular block disintegrated, I would've had to
+walk up the tree to compute how many blocks would be affected by the removal of children blocks. I
+was not able to get this right on the first try, so I decided to just take the brute force approach:
+for each block to disintegrate, re-run my "simulation" from Part A to see how many blocks would end
+up resettling.
