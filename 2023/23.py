@@ -57,9 +57,7 @@ def part_a_dfs(input):
     grid = input.splitlines()
     start = (0, 1)
     end = (len(grid) - 1, len(grid[0]) - 2)
-    visited = set()
-    visited.add(start)
-    return dfs(grid, end, start, 0, visited)
+    return dfs(grid, end, start, 0, {start})
 
 def part_a_bfs(input):
     grid = input.splitlines()
@@ -129,9 +127,7 @@ def find_max_distance_on_grid(grid, start, end, avoid):
                 visited.remove((an, bn))
         return max(ghosts) if ghosts else 0
 
-    visited = set()
-    visited.add(start)
-    return dfs(grid, end, start, 0, visited)
+    return dfs(grid, end, start, 0, {start})
 
 def find_max_distance_on_graph(graph, distance_matrix, start, end):
     def dfs(graph, goal, pos, dist, visited):
@@ -145,9 +141,7 @@ def find_max_distance_on_graph(graph, distance_matrix, start, end):
                 visited.remove(neighbor)
         return max(ghosts) if ghosts else 0
 
-    visited = set()
-    visited.add(start)
-    return dfs(graph, end, start, 0, visited)
+    return dfs(graph, end, start, 0, {start})
 
 def part_b(input):
     grid = input.splitlines()
