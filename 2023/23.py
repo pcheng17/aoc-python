@@ -17,16 +17,16 @@ def part_a(input):
     start = (0, 1)
     end = (rows - 1, cols - 2)
 
-    queue = [(start, 0, set())]
+    queue = [(0, start, set())]
     heapify(queue)
 
     current_max = 0
 
     while queue:
-        pos, dist, v = heappop(queue)
+        dist, pos, v = heappop(queue)
 
         if pos == end:
-            current_max = max(current_max, dist)
+            current_max = min(current_max, dist)
             continue
 
         v.add(pos)
@@ -35,42 +35,42 @@ def part_a(input):
 
         if grid[pa][pb] == ">":
             if (pa, pb + 1) not in v:
-                heappush(queue, ((pa, pb + 1), dist + 1, v.copy()))
+                heappush(queue, (dist - 1, (pa, pb + 1), v.copy()))
         elif grid[pa][pb] == "<":
             if (pa, pb - 1) not in v:
-                heappush(queue, ((pa, pb - 1), dist + 1, v.copy()))
+                heappush(queue, (dist - 1, (pa, pb - 1), v.copy()))
         elif grid[pa][pb] == "^":
             if (pa - 1, pb) not in v:
-                heappush(queue, ((pa - 1, pb), dist + 1, v.copy()))
+                heappush(queue, (dist - 1, (pa - 1, pb), v.copy()))
         elif grid[pa][pb] == "v":
             if (pa + 1, pb) not in v:
-                heappush(queue, ((pa + 1, pb), dist + 1, v.copy()))
+                heappush(queue, (dist - 1, (pa + 1, pb), v.copy()))
         elif grid[pa][pb] == ".":
             if is_valid(grid, (pa, pb + 1)) and (pa, pb + 1) not in v:
-                heappush(queue, ((pa, pb + 1), dist + 1, v.copy()))
+                heappush(queue, (dist - 1, (pa, pb + 1), v.copy()))
             if is_valid(grid, (pa, pb - 1)) and (pa, pb - 1) not in v:
-                heappush(queue, ((pa, pb - 1), dist + 1, v.copy()))
+                heappush(queue, (dist - 1, (pa, pb - 1), v.copy()))
             if is_valid(grid, (pa + 1, pb)) and (pa + 1, pb) not in v:
-                heappush(queue, ((pa + 1, pb), dist + 1, v.copy()))
+                heappush(queue, (dist - 1, (pa + 1, pb), v.copy()))
             if is_valid(grid, (pa - 1, pb)) and (pa - 1, pb) not in v:
-                heappush(queue, ((pa - 1, pb), dist + 1, v.copy()))
+                heappush(queue, (dist - 1, (pa - 1, pb), v.copy()))
 
-    return current_max
+    return -current_max
 
 def find_max_distance_on_grid(grid, start, end, avoid):
-    queue = [(start, 0, set())]
+    queue = [(0, start, set())]
     heapify(queue)
 
-    current_max = float("-inf")
+    current_max = 0
 
     while queue:
-        pos, dist, v = heappop(queue)
+        dist, pos, v = heappop(queue)
 
         if pos in avoid or pos in v:
             continue
 
         if pos == end:
-            current_max = max(current_max, dist)
+            current_max = min(current_max, dist)
             continue
 
         v.add(pos)
@@ -78,30 +78,30 @@ def find_max_distance_on_grid(grid, start, end, avoid):
         pa, pb = pos
 
         if is_valid(grid, (pa, pb + 1)):
-            heappush(queue, ((pa, pb + 1), dist + 1, v.copy()))
+            heappush(queue, (dist - 1, (pa, pb + 1), v.copy()))
         if is_valid(grid, (pa, pb - 1)):
-            heappush(queue, ((pa, pb - 1), dist + 1, v.copy()))
+            heappush(queue, (dist - 1, (pa, pb - 1), v.copy()))
         if is_valid(grid, (pa + 1, pb)):
-            heappush(queue, ((pa + 1, pb), dist + 1, v.copy()))
+            heappush(queue, (dist - 1, (pa + 1, pb), v.copy()))
         if is_valid(grid, (pa - 1, pb)):
-            heappush(queue, ((pa - 1, pb), dist + 1, v.copy()))
+            heappush(queue, (dist - 1, (pa - 1, pb), v.copy()))
 
-    return current_max
+    return -current_max
 
 def find_max_distance_on_graph(graph, distance_matrix, start, end):
-    queue = [(start, 0, set())]
+    queue = [(0, start, set())]
     heapify(queue)
-    current_max = float("-inf")
+    current_max = 0
     while queue:
-        pos, dist, v = heappop(queue)
+        dist, pos, v = heappop(queue)
         if pos == end:
-            current_max = max(current_max, dist)
+            current_max = min(current_max, dist)
             continue
         v.add(pos)
         for neighbor in graph[pos]:
             if neighbor not in v and distance_matrix[(pos, neighbor)] > 0:
-                heappush(queue, (neighbor, dist + distance_matrix[(pos, neighbor)], v.copy()))
-    return current_max
+                heappush(queue, (dist - distance_matrix[(pos, neighbor)], neighbor, v.copy()))
+    return -current_max
 
 def part_b(input):
     grid = input.splitlines()
