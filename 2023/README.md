@@ -336,3 +336,28 @@ walk up the tree to compute how many blocks would be affected by the removal of 
 was not able to get this right on the first try, so I decided to just take the brute force approach:
 for each block to disintegrate, re-run my "simulation" from Part A to see how many blocks would end
 up resettling.
+
+### Day 23
+
+Man, this one was hard. I used BFS in Part A, but got stuck on how to properly implement a visited
+set to prevent myself from walking over the same route. After quite a bit of time, I realized that
+every ghost that gets spawned to explore a new route needs to know its history of visited nodes, so,
+so every element in the queue (a ghost that needs to be processed) must also store a set. Then, the
+trick was that, when adding a new item to the queue, the new item's history of visited nodes
+**must** be a new copy of the history of visited nodes of the item that spawned it. This way, the
+history of visited nodes of the parent ghost is not modified when the child ghost explores a new
+path.
+
+Part B was brutal. I tried to improve my code for Part A, but I think the problem was just too large
+to be done in a naive BFS way. Bonsoon was the real MVP behind my solution. He observed that the map
+was actually a maze with where all the channels were only one tile wide, so in most of the map,
+there was only one way to walk. Where there were multiple ways to walk, the maze had a branch point
+where a decision of direction had to be made. Bonsoon's idea was to first extract all the branch
+points of the map, including the start and end, to form a coarse approximation of the maze; this
+forms a graph. Then, find all pair-wise max distances between nodes of this graph by using the maze
+under the restriction that we never cross over our own path, and we never walk through another
+branch point; this produces a weighted graph. Finally, use BFS on this weighted graph to find the
+largest distance from start to end.
+
+After much debugging, I was able to produce a solution. Surprisingly, it wasn't fast, but it worked.
+Thanks Bonsoon!
