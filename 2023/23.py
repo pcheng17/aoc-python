@@ -1,6 +1,12 @@
 from heapq import heapify, heappush, heappop
 from collections import defaultdict
 from itertools import combinations
+import sys
+
+up = (-1, 0)
+down = (1, 0)
+left = (0, -1)
+right = (0, 1)
 
 def is_valid(grid, pos):
     return 0 <= pos[0] < len(grid) and 0 <= pos[1] < len(grid[0]) and grid[pos[0]][pos[1]] != "#"
@@ -8,7 +14,54 @@ def is_valid(grid, pos):
 def is_branch(grid, pos):
     return sum(int(grid[pos[0]+dx][pos[1]+dy] == '.') for dx, dy in ((0, 1), (0, -1), (1, 0), (-1, 0))) > 2
 
-def part_a(input):
+def part_a_dfs(input):
+    def dfs(grid, goal, pos, dist, visited):
+        if pos == goal:
+            return dist
+
+        ghosts = []
+
+        a, b = pos
+
+        if grid[a][b] == ">":
+            if is_valid(grid, (a, b + 1)) and (a, b + 1) not in visited:
+                visited.add((a, b + 1))
+                ghosts.append(dfs(grid, goal, (a, b + 1), dist + 1, visited))
+                visited.remove((a, b + 1))
+        elif grid[a][b] == "<":
+            if is_valid(grid, (a, b - 1)) and (a, b - 1) not in visited:
+                visited.add((a, b - 1))
+                ghosts.append(dfs(grid, goal, (a, b - 1), dist + 1, visited))
+                visited.remove((a, b - 1))
+        elif grid[a][b] == "^":
+            if is_valid(grid, (a - 1, b)) and (a - 1, b) not in visited:
+                visited.add((a - 1, b))
+                ghosts.append(dfs(grid, goal, (a - 1, b), dist + 1, visited))
+                visited.remove((a - 1, b))
+        elif grid[a][b] == "v":
+            if is_valid(grid, (a + 1, b)) and (a + 1, b) not in visited:
+                visited.add((a + 1, b))
+                ghosts.append(dfs(grid, goal, (a + 1, b), dist + 1, visited))
+                visited.remove((a + 1, b))
+        else:
+            for dx, dy in (up, down, left, right):
+                an = pos[0] + dx
+                bn = pos[1] + dy
+                if is_valid(grid, (an, bn)) and (an, bn) not in visited:
+                    visited.add((an, bn))
+                    ghosts.append(dfs(grid, goal, (an, bn), dist + 1, visited))
+                    visited.remove((an, bn))
+        return max(ghosts) if ghosts else 0
+
+    sys.setrecursionlimit(1000000)
+    grid = input.splitlines()
+    start = (0, 1)
+    end = (len(grid) - 1, len(grid[0]) - 2)
+    visited = set()
+    visited.add(start)
+    return dfs(grid, end, start, 0, visited)
+
+def part_a_bfs(input):
     grid = input.splitlines()
 
     rows = len(grid)
@@ -57,51 +110,44 @@ def part_a(input):
 
     return -current_max
 
+def part_a(input):
+    return part_a_dfs(input)
+
 def find_max_distance_on_grid(grid, start, end, avoid):
-    queue = [(0, start, set())]
-    heapify(queue)
+    def dfs(grid, goal, pos, dist, visited):
+        if pos == goal:
+            return dist
 
-    current_max = 0
+        ghosts = []
 
-    while queue:
-        dist, pos, v = heappop(queue)
+        for dx, dy in (up, down, left, right):
+            an = pos[0] + dx
+            bn = pos[1] + dy
+            if is_valid(grid, (an, bn)) and (an, bn) not in visited and (an, bn) not in avoid:
+                visited.add((an, bn))
+                ghosts.append(dfs(grid, goal, (an, bn), dist + 1, visited))
+                visited.remove((an, bn))
+        return max(ghosts) if ghosts else 0
 
-        if pos in avoid or pos in v:
-            continue
-
-        if pos == end:
-            current_max = min(current_max, dist)
-            continue
-
-        v.add(pos)
-
-        pa, pb = pos
-
-        if is_valid(grid, (pa, pb + 1)):
-            heappush(queue, (dist - 1, (pa, pb + 1), v.copy()))
-        if is_valid(grid, (pa, pb - 1)):
-            heappush(queue, (dist - 1, (pa, pb - 1), v.copy()))
-        if is_valid(grid, (pa + 1, pb)):
-            heappush(queue, (dist - 1, (pa + 1, pb), v.copy()))
-        if is_valid(grid, (pa - 1, pb)):
-            heappush(queue, (dist - 1, (pa - 1, pb), v.copy()))
-
-    return -current_max
+    visited = set()
+    visited.add(start)
+    return dfs(grid, end, start, 0, visited)
 
 def find_max_distance_on_graph(graph, distance_matrix, start, end):
-    queue = [(0, start, set())]
-    heapify(queue)
-    current_max = 0
-    while queue:
-        dist, pos, v = heappop(queue)
-        if pos == end:
-            current_max = min(current_max, dist)
-            continue
-        v.add(pos)
+    def dfs(graph, goal, pos, dist, visited):
+        if pos == goal:
+            return dist
+        ghosts = []
         for neighbor in graph[pos]:
-            if neighbor not in v and distance_matrix[(pos, neighbor)] > 0:
-                heappush(queue, (dist - distance_matrix[(pos, neighbor)], neighbor, v.copy()))
-    return -current_max
+            if neighbor not in visited:
+                visited.add(neighbor)
+                ghosts.append(dfs(graph, goal, neighbor, dist + distance_matrix[(pos, neighbor)], visited))
+                visited.remove(neighbor)
+        return max(ghosts) if ghosts else 0
+
+    visited = set()
+    visited.add(start)
+    return dfs(graph, end, start, 0, visited)
 
 def part_b(input):
     grid = input.splitlines()
