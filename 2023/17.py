@@ -18,52 +18,58 @@ def dijkstra(grid, start):
         (int(grid[0][1]), (0, 1), '>', 1),
         (int(grid[1][0]), (1, 0), 'v', 1),
     ]
+    heapify(queue)
 
     while queue:
         hl, (i, j), d, sd = heappop(queue)
+        print(f'{hl} {i} {j} {d} {sd}')
 
-        if (i, j) in visited:
+        if (i, j, d) in visited:
             continue
 
-        visited.add((i, j))
+        visited.add((i, j, d))
         heat_loss[(i, j)] = min(heat_loss[(i, j)], hl)
 
         if d == '>':
             if sd < 3 and in_bounds(grid, i, j + 1):
-                heappush(queue, (hl + int(grid[i][j + 1]), (i, j + 1), '>', sd + 1))
+                heappush(queue, (hl + grid[i][j + 1], (i, j + 1), '>', sd + 1))
             if in_bounds(grid, i - 1, j):
-                heappush(queue, (hl + int(grid[i - 1][j]), (i - 1, j), '^', 0))
+                heappush(queue, (hl + grid[i - 1][j], (i - 1, j), '^', 1))
             if in_bounds(grid, i + 1, j):
-                heappush(queue, (hl + int(grid[i + 1][j]), (i + 1, j), 'v', 0))
+                heappush(queue, (hl + grid[i + 1][j], (i + 1, j), 'v', 1))
         elif d == '^':
             if sd < 3 and in_bounds(grid, i - 1, j):
-                heappush(queue, (hl + int(grid[i - 1][j]), (i - 1, j), '^', sd + 1))
+                heappush(queue, (hl + grid[i - 1][j], (i - 1, j), '^', sd + 1))
             if in_bounds(grid, i, j + 1):
-                heappush(queue, (hl + int(grid[i][j + 1]), (i, j + 1), '>', 0))
+                heappush(queue, (hl + grid[i][j + 1], (i, j + 1), '>', 1))
             if in_bounds(grid, i, j - 1):
-                heappush(queue, (hl + int(grid[i][j - 1]), (i, j - 1), '<', 0))
+                heappush(queue, (hl + grid[i][j - 1], (i, j - 1), '<', 1))
         elif d == '<':
             if sd < 3 and in_bounds(grid, i, j - 1):
-                heappush(queue, (hl + int(grid[i][j - 1]), (i, j - 1), '<', sd + 1))
+                heappush(queue, (hl + grid[i][j - 1], (i, j - 1), '<', sd + 1))
             if in_bounds(grid, i - 1, j):
-                heappush(queue, (hl + int(grid[i - 1][j]), (i - 1, j), '^', 0))
+                heappush(queue, (hl + grid[i - 1][j], (i - 1, j), '^', 1))
             if in_bounds(grid, i + 1, j):
-                heappush(queue, (hl + int(grid[i + 1][j]), (i + 1, j), 'v', 0))
+                heappush(queue, (hl + grid[i + 1][j], (i + 1, j), 'v', 1))
         elif d == 'v':
             if sd < 3 and in_bounds(grid, i + 1, j):
-                heappush(queue, (hl + int(grid[i + 1][j]), (i + 1, j), 'v', sd + 1))
+                heappush(queue, (hl + grid[i + 1][j], (i + 1, j), 'v', sd + 1))
             if in_bounds(grid, i, j + 1):
-                heappush(queue, (hl + int(grid[i][j + 1]), (i, j + 1), '>', 0))
+                heappush(queue, (hl + grid[i][j + 1], (i, j + 1), '>', 1))
             if in_bounds(grid, i, j - 1):
-                heappush(queue, (hl + int(grid[i][j - 1]), (i, j - 1), '<', 0))
+                heappush(queue, (hl + grid[i][j - 1], (i, j - 1), '<', 1))
 
     return heat_loss[(rows - 1, cols - 1)]
 
 def part_a(input):
-    data = tuple(input.splitlines())
-    return dijkstra(data, (0, 0))
+    grid = [[int(c) for c in line] for line in input.splitlines()]
+    return dijkstra(grid, (0, 0))
 
 def part_b(input):
     data = input.splitlines()
 
 # 662 -- too low
+
+# 669 not right
+# 677 -- too high
+# 694 -- too high
