@@ -1,5 +1,3 @@
-from aocd import data
-
 shape = {
     'X': 1,
     'Y': 2,
@@ -42,21 +40,21 @@ def rps(theirs, yours):
         elif yours == 'Y': return LOST
         else: return DRAW
 
-def partB(theirs, outcome):
+def solve_b(theirs, outcome):
     if outcome == 'X': return losesAgainst[theirs] + LOST
     elif outcome == 'Y': return tiesAgainst[theirs] + DRAW
     else: return winsAgainst[theirs] + WON
 
+def part_a(input):
+    total = 0
+    for game in input.splitlines():
+        theirs, yours = game.split(' ');
+        total += rps(theirs, yours) + shape[yours]
+    return total
 
-totalA = 0;
-for game in data.split('\n'):
-    theirs, yours = game.split();
-    totalA += rps(theirs, yours) + shape[yours]
-
-totalB = 0;
-for game in data.split('\n'):
-    theirs, outcome = game.split();
-    totalB += partB(theirs, outcome);
-
-print(f'Part A: {totalA}')
-print(f'Part A: {totalB}')
+def part_b(input):
+    total = 0
+    for game in input.splitlines():
+        theirs, outcome = game.split(' ');
+        total += solve_b(theirs, outcome)
+    return total

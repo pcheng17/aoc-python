@@ -1,13 +1,11 @@
-from aocd import data
-
 def getPriority(char):
     if char.isupper():
         return ord(char) - ord('A') + 27
     else:
         return ord(char) - ord('a') + 1
 
-
-def partA(dataList):
+def part_a(input):
+    dataList = input.split('\n')
     result = 0
     for line in dataList:
         firstHalf = set(line[0 : len(line)//2])
@@ -16,8 +14,8 @@ def partA(dataList):
             result += getPriority(char)
     return result
 
-
-def partB(dataList):
+def part_b(input):
+    dataList = input.split('\n')
     result = 0
     for i in range(0, len(dataList), 3):
         first = set(dataList[i])
@@ -26,8 +24,3 @@ def partB(dataList):
         for char in first.intersection(second, third):
             result += getPriority(char)
     return result
-
-dataList = data.split('\n') 
-print(f'Part A: {partA(dataList)}')
-print(f'Part B: {partB(dataList)}')
-

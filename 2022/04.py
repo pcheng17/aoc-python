@@ -1,5 +1,3 @@
-from aocd import data
-
 def containsOther(x, y, u, v):
     return ((x<=u) and (y>=v))
 
@@ -9,27 +7,20 @@ def isRedundant(x, y, u, v):
 def isOverlapping(x, y, u, v):
     return ((y>=u) and (v>=x))
 
-
-def partA(dataList):
+def part_a(input):
     result = 0
-    for line in dataList:
+    for line in input.splitlines():
         r1, r2 = line.split(',')
         r1a, r1b = map(int, r1.split('-'))
         r2a, r2b = map(int, r2.split('-'))
         result += int(isRedundant(r1a, r1b, r2a, r2b))
-    return result 
+    return result
 
-
-def partB(dataList):
+def part_b(input):
     result = 0
-    for line in dataList:
+    for line in input.splitlines():
         r1, r2 = line.split(',')
         r1a, r1b = map(int, r1.split('-'))
         r2a, r2b = map(int, r2.split('-'))
         result += int(isOverlapping(r1a, r1b, r2a, r2b))
-    return result 
-
-
-dataList = data.splitlines()
-print(f'Part A: {partA(dataList)}')
-print(f'Part B: {partB(dataList)}')
+    return result
