@@ -33,9 +33,13 @@ def crt(eqs):
         return result
 
     N = prod(n for _, n in eqs)
-    result = 0 
+    result = 0
     for a, n in eqs:
         Ni = N // n
         b = inv_mod(Ni, n)
         result += a * Ni * b
     return result % N
+
+def shoelace(points):
+    '''Shoelace formula for finding area of polygon'''
+    return sum(a[0] * b[1] - a[1] * b[0] for a, b in zip(points, points[1:])) / 2

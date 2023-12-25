@@ -270,7 +270,19 @@ Brute forcing Part B was also fine, nothing special.
 
 ### Day 18
 
+Part A and B were straightforward using the Shoelace formula and Pick's Theorem.
+
 ### Day 19
+
+I think the hard part of Part A was simply just organizing all of the data properly in a dictionary.
+I learned that the `operator` library comes with `operator.lt` and `operator.gt`, so as I was
+parsing the data, I stuck those operators into my data structure so it was really easy for me to
+evaluate all of the conditionals.
+
+Part B was quite interesting. After much discussion with Bonsoon, we realized that trick was to
+traverse the graph in a DFS way; in this way, every branch in the logic simply partitions our set of
+all inputs into two contiguous subsets, which is easy to handle. DFS also allows backtracking, which
+guarantees that we're able to return back to a previous state to evaluate the other branch easily.
 
 ### Day 20
 
