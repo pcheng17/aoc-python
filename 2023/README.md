@@ -361,3 +361,27 @@ largest distance from start to end.
 
 After much debugging, I was able to produce a solution. Surprisingly, it wasn't fast, but it worked.
 Thanks Bonsoon!
+
+### Day 24
+
+This one was fun, mostly because it was much more mathy type of puzzle. I solved Part A by just
+solving for the closed form of the intersection points - pretty straightforward.
+
+For Part B, I really wanted to write down the system of equations to solve it, but ended up getting
+too lazy, so I figured out how to use `sympy` to set up and solve the equations for me. The catch is
+that you only need data from 3 hailstones to setup the sufficient number of equations.
+
+### Day 25
+
+This was was great, mostly because Bonsoon and I came up with our cursed approach. I plotted the
+graph using Graphviz, and then realized that I could easily spot the two connected components once
+the three appropriate edges were removed (thanks to how Graphviz plotted the graph). Me being
+big-brained, I decided to just count up the number of nodes in one of the connected components by
+hand. This took me two tries though because I miscounted the first time... I ended up being off by
+two. The second time, I pulled up an online tally app so I could just hit my space bar to count for
+me. EZ
+
+I've included the svg file for the graph I generated for safe-keeping.
+
+I realized that I can count things really quickly when it comes in groups of 2 or 3. The moment
+there are 4 items in a group, I found that I would often wonder if I had hit the space bar 4 times...
