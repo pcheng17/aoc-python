@@ -39,16 +39,19 @@ def get_default_day():
 
 def print_timing_table(timing):
     table = PrettyTable()
-    table.field_names = ['Problem', 'Part a (ms)', 'Part b (ms)', 'Total (ms)']
+    table.field_names = ['Problem', 'Part A (ms)', 'Part B (ms)', '% Total Time']
     table.align['Problem'] = 'l'
+    table.align['Part A (ms)'] = 'r'
+    table.align['Part B (ms)'] = 'r'
+    table.align['% Total Time'] = 'r'
     total_a = 0
     total_b = 0
+    total = sum(map(sum, timing))
     for i, (a, b) in enumerate(timing, 1):
-        table.add_row([f'Day {i}', f'{a:.2f}', f'{b:.2f}', f'{a+b:.2f}'], divider=True if i == 25 else False)
+        table.add_row([f'Day {i}', f'{a:.4f}', f'{b:.4f}', f'{100*(a+b)/total:.3f}'], divider=True if i == 25 else False)
         total_a += a
         total_b += b
-    total = total_a + total_b
-    table.add_row(['Total (ms)', f'{total_a:.2f}', f'{total_b:.2f}', f'{total_a+total_b:.2f}'])
+    table.add_row(['Total', f'{total_a:.2f}', f'{total_b:.2f}', f'{100:.2f}'])
     print(table)
 
 
@@ -124,11 +127,11 @@ def benchmark(year):
                 tmp.append(elapsed_ms)
             else:
                 tmp.append(0)
-        
+
         timing.append((tmp[0], tmp[1]))
 
     print_timing_table(timing)
-    
+
 
 def create_scaffold(year, day):
     """Create the solution scaffold for a particular Advent of Code problem."""
