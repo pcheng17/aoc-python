@@ -18,7 +18,7 @@ def print_banner(year, day):
     days_til = 25 - int(day)
     date_str = datetime(year, 12, int(day)).strftime('%B %d, %Y')
     countdown_str = f'{days_til} day{"" if days_til == 1 else "s"} til Christmas' if days_til > 0 else 'Merry Christmas!'
-    title_str = f'|        Advent of Code :: {date_str} :: {countdown_str}       |'
+    title_str = f'|    Advent of Code :: {date_str} :: {countdown_str}   |'
     separator = '+' + '-' * (len(title_str) - 2) + '+'
     print(separator)
     print(title_str)
