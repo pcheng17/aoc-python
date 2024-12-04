@@ -25,3 +25,14 @@ process. Woops, not the case this time...
 
 Knowing a tiny bit of regex saved me this time, too. I remember I really struggled with regex last
 year.
+
+### Day 4
+
+Grids! I got to `[*zip(*grid)]` today! I choked a little bit on the diagonals logic. I feel like
+there should be an easier way of going about it, but I was in too deep. I wasn't going to back out
+of my approach anymore. It worked though. Part b was much easier because the pattern was much easier
+to reason about.
+
+Remember:
+- `[*zip(*grid)]` transposes the grid
+- `[*zip(*grid[::-1])]` rotates the grid clockwise by 90 degrees
