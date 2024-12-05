@@ -36,3 +36,15 @@ to reason about.
 Remember:
 - `[*zip(*grid)]` transposes the grid
 - `[*zip(*grid[::-1])]` rotates the grid clockwise by 90 degrees
+
+### Day 5
+
+This problem was kind of just annoying. Part a wasn't difficult, and part b just required me to
+remember how to use `cmp_to_key` as a custom comparison function in `sort`. Otherwise, a pretty
+straightforward problem.
+
+`cmp_to_key` needs to do the following:
+
+- return `-1` if `a < b`
+- return `1` if `a > b`
+- return `0` if `a == b`
