@@ -1,5 +1,3 @@
-from functools import cmp_to_key
-
 def check(rules, update):
     for rule in rules:
         if rule[0] not in update or rule[1] not in update:
@@ -41,21 +39,24 @@ def part_b(input):
         if not check(rules, row):
             asdf.append(row)
 
-    def cmp(a, b):
-        for row in rules:
-            if row[0] == a and row[1] == b:
-                return -1
-            elif row[0] == b and row[1] == a:
-                return 1
-            else:
-                continue
+    def bubblesort(arr):
+        for i in range(len(arr)):
+            swapped = False
+            for j in range(0, len(arr)-i-1):
+                for r in rules:
+                    if r[0] == arr[j+1] and r[1] == arr[j]:
+                        arr[j], arr[j+1] = arr[j+1], arr[j]
+                        swapped = True
+                        break
+
+            if not swapped:
+                break
+
+        return arr
 
     total = 0
     for row in asdf:
-        row.sort(key=cmp_to_key(cmp))
+        row = bubblesort(row)
         total = total + row[len(row) // 2]
     return total
-
-
-
 

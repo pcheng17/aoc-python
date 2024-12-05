@@ -48,3 +48,5 @@ straightforward problem.
 - return `-1` if `a < b`
 - return `1` if `a > b`
 - return `0` if `a == b`
+
+Edit: I came back and implemented bubble sort to not use any built-in tools.
