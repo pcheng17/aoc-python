@@ -50,3 +50,12 @@ straightforward problem.
 - return `0` if `a == b`
 
 Edit: I came back and implemented bubble sort to not use any built-in tools.
+
+### Day 6
+
+We're getting into the territory of typical AoC problems now. This one was pretty straight forward.
+My mistake for part b was assuming that the loop that we enter must use the newly placed obstacle.
+It turns out that's not the case, i.e., after hitting the newly placed obstacle once, there was at
+least one case where we entered a loop without ever revisiting the newly placed obstacle. I got
+around this by just storing the state at every position along the path that I've traveled so far. If
+we see a previous state, then we're in a loop. That should've been my first approach...

@@ -1,19 +1,18 @@
+from collections import defaultdict
+
 def check(rules, update):
-    for rule in rules:
-        if rule[0] not in update or rule[1] not in update:
-            continue
-        i = update.index(rule[0])
-        j = update.index(rule[1])
-        if i > j:
-            return False
+    for i in range(1, len(update)):
+        if update[i] in rules:
+            if update[i-1] in rules[update[i]]:
+                return False
     return True
 
 def parse(input):
     sec0, sec1 = input.split("\n\n")
-    rules = []
+    rules = defaultdict(set)
     for rule in sec0.splitlines():
         a, b = rule.split("|")
-        rules.append((int(a), int(b)))
+        rules[int(a)].add(int(b))
 
     updates = []
     for row in sec1.splitlines():
@@ -43,11 +42,9 @@ def part_b(input):
         for i in range(len(arr)):
             swapped = False
             for j in range(0, len(arr)-i-1):
-                for r in rules:
-                    if r[0] == arr[j+1] and r[1] == arr[j]:
-                        arr[j], arr[j+1] = arr[j+1], arr[j]
-                        swapped = True
-                        break
+                if arr[j+1] in rules and arr[j] in rules[arr[j+1]]:
+                    arr[j], arr[j+1] = arr[j+1], arr[j]
+                    swapped = True
 
             if not swapped:
                 break
