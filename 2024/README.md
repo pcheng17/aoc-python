@@ -59,3 +59,11 @@ It turns out that's not the case, i.e., after hitting the newly placed obstacle 
 least one case where we entered a loop without ever revisiting the newly placed obstacle. I got
 around this by just storing the state at every position along the path that I've traveled so far. If
 we see a previous state, then we're in a loop. That should've been my first approach...
+
+### Day 7
+
+Not bad today. It took me a little bit to figure out how I wanted to check all possible operations.
+I was getting stuck on doing it recursively because I was trying to be clever. I ended up just
+evaluating one of the operations on the first two integers, creating a new array of that new integer
+along with the rest, and then recursively called myself with that new array. This turned out to be
+totally fine.
