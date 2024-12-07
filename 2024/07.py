@@ -1,4 +1,4 @@
-def test_values(values, target):
+def test_for_a(values, target):
     if len(values) == 1:
         if values[0] == target:
             return True
@@ -8,18 +8,18 @@ def test_values(values, target):
     tmp = []
     tmp.append(values[0]+values[1])
     tmp.extend(values[2:])
-    if test_values(tmp, target):
+    if test_for_a(tmp, target):
         return True
 
     tmp = []
     tmp.append(values[0]*values[1])
     tmp.extend(values[2:])
-    if test_values(tmp, target):
+    if test_for_a(tmp, target):
         return True
 
     return False
 
-def test_values_b(values, target):
+def test_for_b(values, target):
     if len(values) == 1:
         if values[0] == target:
             return True
@@ -29,19 +29,19 @@ def test_values_b(values, target):
     tmp = []
     tmp.append(values[0]+values[1])
     tmp.extend(values[2:])
-    if test_values_b(tmp, target):
+    if test_for_b(tmp, target):
         return True
 
     tmp = []
     tmp.append(values[0]*values[1])
     tmp.extend(values[2:])
-    if test_values_b(tmp, target):
+    if test_for_b(tmp, target):
         return True
 
     tmp = []
     tmp.append(int(str(values[0]) + str(values[1])))
     tmp.extend(values[2:])
-    if test_values_b(tmp, target):
+    if test_for_b(tmp, target):
         return True
 
     return False
@@ -54,7 +54,7 @@ def part_a(input):
         test_value, values = row.split(':')
         test_value = int(test_value)
         values = list(map(int, values.strip().split(" ")))
-        if test_values(values, test_value):
+        if test_for_a(values, test_value):
             total += test_value
     return total
 
@@ -66,6 +66,6 @@ def part_b(input):
         test_value, values = row.split(':')
         test_value = int(test_value)
         values = list(map(int, values.strip().split(" ")))
-        if test_values_b(values, test_value):
+        if test_for_b(values, test_value):
             total += test_value
     return total
