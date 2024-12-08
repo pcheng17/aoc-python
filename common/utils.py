@@ -1,5 +1,8 @@
 from math import prod
 
+def is_inbounds(x, y, rows, cols):
+    return 0 <= x < rows and 0 <= y < cols
+
 def nlargest(n, iterable, key=None):
     return sorted(iterable, key=key, reverse=True)[:n]
 
