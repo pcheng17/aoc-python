@@ -67,3 +67,8 @@ I was getting stuck on doing it recursively because I was trying to be clever. I
 evaluating one of the operations on the first two integers, creating a new array of that new integer
 along with the rest, and then recursively called myself with that new array. This turned out to be
 totally fine.
+
+### Day 8
+
+I think this one was pretty easy. The problem statement itself was a little hard to parse but in the
+end, it was pretty straight forward. I don't think there were any traps.
