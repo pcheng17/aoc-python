@@ -72,3 +72,12 @@ totally fine.
 
 I think this one was pretty easy. The problem statement itself was a little hard to parse but in the
 end, it was pretty straight forward. I don't think there were any traps.
+
+### Day 9
+
+Wow, this one took quite a bit of time to understand what was going on. It felt like there was a lot
+of moving pieces in this problem, and using only words and a few pictures didn't do explaining the
+problem justice. However, once the problem started making sense, I think this was actually a very
+interesting problem. It touches on some important algorithms and data structures, such as the idea
+of matching two indices toward each other, or the idea of a heap (which I did not actually use, oh
+well). All in all, despite being a hard problem to understand, I liked it.
