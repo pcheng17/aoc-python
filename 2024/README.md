@@ -81,3 +81,15 @@ problem justice. However, once the problem started making sense, I think this wa
 interesting problem. It touches on some important algorithms and data structures, such as the idea
 of matching two indices toward each other, or the idea of a heap (which I did not actually use, oh
 well). All in all, despite being a hard problem to understand, I liked it.
+
+### Day 10
+
+Not bad! A little rusty thinking about BFS/DFS and memoization, but this was a nice warm up into
+these types of problems. I'm happy I caught on pretty quickly that part a is much better done in
+"reverse", i.e., start from the 9's and move backward toward the 0s... or at least I think it's much
+better done in reverse. Part b took me a second to figure out how I wanted to setup the DFS, but all
+in all, pretty straightforward.
+
+I learned an interesting trick today. If I want to pass a variable by reference, just stick it in a
+(one-element) list.
+
