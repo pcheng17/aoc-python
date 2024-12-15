@@ -1,6 +1,11 @@
 from collections import defaultdict
 import re
 
+UP = (-1, 0)
+DOWN = (1, 0)
+LEFT = (0, -1)
+RIGHT = (0, 1)
+
 def part_a(input):
     def t(grid):
         '''Tranpose the grid of strings into a new grid of strings'''
@@ -90,8 +95,8 @@ def get_neighbor_lookup(grid, block_pos, coord_to_block):
     return whats_above, whats_below, whats_left, whats_right
 
 def get_block_coord_maps(grid):
-    block_pos = []
-    coord_to_block = {}
+    block_pos = []       # block_pos[i] contains the position of the left side of the ith block
+    coord_to_block = {}  # coord_to_block[(i, j)] contains the block id of the block at (i, j)
     block_id = 0
     for i, row in enumerate(grid):
         for match in re.finditer(r"\[\]", row):
@@ -116,20 +121,19 @@ def part_b(input):
                     return get_assembly_recursive(tmp[0], dmap, assembly) and get_assembly_recursive(tmp[1], dmap, assembly)
         return True
 
-    def move_up(grid, curr_pos):
-        def get_assembly_above(pos):
-            assembly = []
-            can_move = True
-            above_pos = (pos[0] - 1, pos[1])
-            if above_pos in coord_to_block:
-                block_idx = coord_to_block[above_pos]
-                assembly.append(block_idx)
-                can_move = get_assembly_recursive(block_idx, above_map, assembly)
-            return assembly, can_move
+    def get_assembly(pos, dir, coord_to_block, dir_map):
+        assembly = []
+        can_move = True
+        nbr_pos = (pos[0] + dir[0], pos[1] + dir[1])
+        if nbr_pos in coord_to_block:
+            block_idx = coord_to_block[nbr_pos]
+            assembly.append(block_idx)
+            can_move = get_assembly_recursive(block_idx, dir_map, assembly)
+        return assembly, can_move
 
-        assembly, can_move = get_assembly_above(curr_pos)
+    def move(grid, curr_pos, dir, assembly, can_move, block_pos):
         if not assembly:
-            new_pos = (curr_pos[0] - 1, curr_pos[1])
+            new_pos = (curr_pos[0] + dir[0], curr_pos[1] + dir[1])
             if grid[new_pos[0]][new_pos[1]] == ".":
                 return draw_grid(grid, curr_pos, new_pos, block_pos, block_pos)
             else:
@@ -137,88 +141,26 @@ def part_b(input):
         if can_move:
             block_pos_old = block_pos.copy()
             for idx in assembly:
-                block_pos[idx] = (block_pos[idx][0] - 1, block_pos[idx][1])
-            new_pos = (curr_pos[0] - 1, curr_pos[1])
+                block_pos[idx] = (block_pos[idx][0] + dir[0], block_pos[idx][1] + dir[1])
+            new_pos = (curr_pos[0] + dir[0], curr_pos[1] + dir[1])
             return draw_grid(grid, curr_pos, new_pos, block_pos_old, block_pos)
         return grid
+
+    def move_up(grid, curr_pos):
+        assembly, can_move = get_assembly(curr_pos, UP, coord_to_block, above_map)
+        return move(grid, curr_pos, UP, assembly, can_move, block_pos)
 
     def move_down(grid, curr_pos):
-        def get_assembly_below(pos):
-            assembly = []
-            can_move = True
-            below_pos = (pos[0] + 1, pos[1])
-            if below_pos in coord_to_block:
-                block_idx = coord_to_block[below_pos]
-                assembly.append(block_idx)
-                can_move = get_assembly_recursive(block_idx, below_map, assembly)
-            return assembly, can_move
-
-        assembly, can_move = get_assembly_below(curr_pos)
-        if not assembly:
-            new_pos = (curr_pos[0] + 1, curr_pos[1])
-            if grid[new_pos[0]][new_pos[1]] == ".":
-                return draw_grid(grid, curr_pos, new_pos, block_pos, block_pos)
-            else:
-                can_move = False
-        if can_move:
-            block_pos_old = block_pos.copy()
-            for idx in assembly:
-                block_pos[idx] = (block_pos[idx][0] + 1, block_pos[idx][1])
-            new_pos = (curr_pos[0] + 1, curr_pos[1])
-            return draw_grid(grid, curr_pos, new_pos, block_pos_old, block_pos)
-        return grid
+        assembly, can_move = get_assembly(curr_pos, DOWN, coord_to_block, below_map)
+        return move(grid, curr_pos, DOWN, assembly, can_move, block_pos)
 
     def move_left(grid, curr_pos):
-        def get_assembly_left(pos):
-            assembly = []
-            can_move = True
-            left_pos = (pos[0], pos[1] - 1)
-            if left_pos in coord_to_block:
-                block_idx = coord_to_block[left_pos]
-                assembly.append(block_idx)
-                can_move = get_assembly_recursive(block_idx, left_map, assembly)
-            return assembly, can_move
-
-        assembly, can_move = get_assembly_left(curr_pos)
-        if not assembly:
-            new_pos = (curr_pos[0], curr_pos[1] - 1)
-            if grid[new_pos[0]][new_pos[1]] == ".":
-                return draw_grid(grid, curr_pos, new_pos, block_pos, block_pos)
-            else:
-                can_move = False
-        if can_move:
-            block_pos_old = block_pos.copy()
-            for idx in assembly:
-                block_pos[idx] = (block_pos[idx][0], block_pos[idx][1] - 1)
-            new_pos = (curr_pos[0], curr_pos[1] - 1)
-            return draw_grid(grid, curr_pos, new_pos, block_pos_old, block_pos)
-        return grid
+        assembly, can_move = get_assembly(curr_pos, LEFT, coord_to_block, left_map)
+        return move(grid, curr_pos, LEFT, assembly, can_move, block_pos)
 
     def move_right(grid, curr_pos):
-        def get_assembly_right(pos):
-            assembly = []
-            can_move = True
-            right_pos = (pos[0], pos[1] + 1)
-            if right_pos in coord_to_block:
-                block_idx = coord_to_block[right_pos]
-                assembly.append(block_idx)
-                can_move = get_assembly_recursive(block_idx, right_map, assembly)
-            return assembly, can_move
-
-        assembly, can_move = get_assembly_right(curr_pos)
-        if not assembly:
-            new_pos = (curr_pos[0], curr_pos[1] + 1)
-            if grid[new_pos[0]][new_pos[1]] == ".":
-                return draw_grid(grid, curr_pos, new_pos, block_pos, block_pos)
-            else:
-                can_move = False
-        if can_move:
-            block_pos_old = block_pos.copy()
-            for idx in assembly:
-                block_pos[idx] = (block_pos[idx][0], block_pos[idx][1] + 1)
-            new_pos = (curr_pos[0], curr_pos[1] + 1)
-            return draw_grid(grid, curr_pos, new_pos, block_pos_old, block_pos)
-        return grid
+        assembly, can_move = get_assembly(curr_pos, RIGHT, coord_to_block, right_map)
+        return move(grid, curr_pos, RIGHT, assembly, can_move, block_pos)
 
     def get_current_pos(grid):
         for i, row in enumerate(grid):
@@ -269,8 +211,11 @@ def part_b(input):
                 grid = move_right(grid, curr_pos)
             case _:
                 print("invalid move")
-        for row in grid:
-            print(row)
+        # for row in grid:
+        #     print(row)
+
+    for row in grid:
+        print(row)
 
     total = 0
     for i, row in enumerate(grid):
