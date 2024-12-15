@@ -93,3 +93,12 @@ in all, pretty straightforward.
 I learned an interesting trick today. If I want to pass a variable by reference, just stick it in a
 (one-element) list.
 
+### Day 11
+
+### Day 12
+
+### Day 13
+
+### Day 14
+
+### Day 15

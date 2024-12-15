@@ -20,8 +20,6 @@ def part_a(input):
 
     return nwQuadrant * neQuadrant * swQuadrant * seQuadrant
 
-
-
 def part_b(input):
     nr = 103
     nc = 101
@@ -34,13 +32,39 @@ def part_b(input):
         botv.append((vx, vy))
 
     eigenvalues = []
-    for _ in range(10403):
+    for t in range(10403):
         for i in range(len(botp)):
             px, py = botp[i]
             vx, vy = botv[i]
             newx = (px + vx) % nc
             newy = (py + vy) % nr
             botp[i] = (newx, newy)
+
+        possible = False
+        for j in range(nr):
+            tmp = list(sorted(set(x[0] for x in botp if x[1] == j)))
+            if not tmp:
+                continue
+            curr = tmp[0]
+            count = 1
+            for k in range(1, len(tmp)):
+                if tmp[k] == curr + 1:
+                    count += 1
+                else:
+                    count = 1
+                curr = tmp[k]
+                if count == 8:
+                    possible = True
+
+        if possible:
+            print(f"Possible at time {t}")
+            fig = plt.figure()
+            grid = np.zeros((nr, nc))
+            for x, y in botp:
+                grid[y, x] = 1
+            plt.imshow(grid)
+            plt.show()
+
         points = np.array(botp)
         mean = np.mean(points, axis=0)
         points = points - mean
@@ -49,10 +73,12 @@ def part_b(input):
         eigenvalues.append((evals[0], evals[1]))
 
     ers = [x[0]/x[1] for x in eigenvalues]
-    ts = [i for i in range(10403)]
+    ts = list(range(10403))
     plt.figure()
-    plt.scatter(ts, ers, label='ratio')
+    plt.scatter(ts, [x[0] for x in eigenvalues], label='eval1')
+    plt.scatter(ts, [x[1] for x in eigenvalues], label='eval2')
+    plt.scatter(ts[7752], eigenvalues[7752][0], color='red', marker='x')
+    plt.scatter(ts[7752], eigenvalues[7752][1], color='red', marker='x')
     plt.legend()
     plt.show()
-
 
