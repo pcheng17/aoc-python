@@ -4,7 +4,7 @@ def find_shortest_path(sz, obstacles, start, goal):
     def is_valid(x, y):
         return (0 <= x < sz and 0 <= y < sz and (x, y) not in obstacles)
 
-    directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
     visited = {start}
     queue = deque([(start[0], start[1], [start])])
