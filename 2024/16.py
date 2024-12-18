@@ -27,18 +27,26 @@ def find_shortest_path(obstacles, start, start_dir, goal):
             continue
 
         for next_dir in possible_dirs[curr_dir]:
-            dx, dy = directions[next_dir]
-            new_x, new_y = x + dx, y + dy
-
-            new_points = points + (1000 if next_dir != curr_dir else 0) + 1
-
-            state = (new_x, new_y, next_dir)
-            if (new_x, new_y) in obstacles or new_points >= min_points:
-                continue
-
-            if state not in visited:
-                visited.add(state)
-                queue.append((new_x, new_y, next_dir, new_points))
+            if next_dir == curr_dir:
+                # Step
+                dx, dy = directions[curr_dir]
+                new_x, new_y = x + dx, y + dy
+                new_points = points + 1
+                state = (new_x, new_y, curr_dir)
+                if (new_x, new_y) in obstacles or new_points >= min_points:
+                    continue
+                if state not in visited:
+                    visited.add(state)
+                    queue.append((new_x, new_y, curr_dir, new_points))
+            else:
+                # Turn
+                new_points = points + 1000
+                state = (x, y, next_dir)
+                if new_points >= min_points:
+                    continue
+                if state not in visited:
+                    visited.add(state)
+                    queue.append((x, y, next_dir, new_points))
 
     return min_points
 
