@@ -1,53 +1,65 @@
-from common.utils import is_inbounds
+from collections import deque
 
-UP = (-1, 0)
-DOWN = (1, 0)
-LEFT = (0, -1)
-RIGHT = (0, 1)
-
-possible_dirs = {
-    UP: (UP, LEFT, RIGHT),
-    DOWN: (DOWN, LEFT, RIGHT),
-    LEFT: (LEFT, UP, DOWN),
-    RIGHT: (RIGHT, UP, DOWN)
+directions = {
+    'N': (-1, 0),
+    'S': (1, 0),
+    'E': (0, 1),
+    'W': (0, -1)
 }
 
-BEST_A = None
+possible_dirs = {
+    'N': ['N', 'E', 'W'],
+    'S': ['S', 'E', 'W'],
+    'E': ['E', 'N', 'S'],
+    'W': ['W', 'N', 'S']
+}
 
-def dfs(grid, pos, dir, points, seen):
-    global BEST_A
-    nr = len(grid)
-    nc = len(grid[0])
-    for d in possible_dirs[dir]:
-        if d != dir:
-            points += 1000
-        dx, dy = d
-        new_pos = (pos[0] + dx, pos[1] + dy)
-        if is_inbounds(new_pos[0], new_pos[1], nr, nc):
-            if grid[new_pos[0]][new_pos[1]] == "E":
-                if BEST_A is None or points < BEST_A:
-                    BEST_A = points
-            elif grid[new_pos[0]][new_pos[1]] == ".":
-                if (new_pos, d) not in seen:
-                    seen[(new_pos, d)] = points
-                    dfs(grid, new_pos, d, points, seen)
-                else:
-                    if points < seen[(new_pos, d)]:
-                        dfs(grid, new_pos, d, points, seen)
+def find_shortest_path(obstacles, start, start_dir, goal):
+    visited = set()
+    queue = deque([(start[0], start[1], start_dir, 0)])
+    min_points = float('inf')
+
+    while queue:
+        x, y, curr_dir, points = queue.popleft()
+
+        if (x, y) == goal:
+            min_points = min(min_points, points)
+            continue
+
+        for next_dir in possible_dirs[curr_dir]:
+            dx, dy = directions[next_dir]
+            new_x, new_y = x + dx, y + dy
+
+            new_points = points + (1000 if next_dir != curr_dir else 0) + 1
+
+            state = (new_x, new_y, next_dir)
+            if (new_x, new_y) in obstacles or new_points >= min_points:
+                continue
+
+            if state not in visited:
+                visited.add(state)
+                queue.append((new_x, new_y, next_dir, new_points))
+
+    return min_points
 
 def part_a(input):
-    global BEST_A
     grid = [list(row) for row in input.splitlines()]
+    obstacles = set()
+    for i, row in enumerate(grid):
+        for j, c in enumerate(row):
+            if c == "#":
+                obstacles.add((i, j))
 
-    S = None
+    start = None
+    goal = None
     for i, row in enumerate(grid):
         for j, c in enumerate(row):
             if c == "S":
-                S = (i, j)
+                start = (i, j)
+            if c == "E":
+                goal = (i, j)
 
-    seen = {}
-    dfs(grid, S, RIGHT, 0, seen)
-    return BEST_A
+    return find_shortest_path(obstacles, start, 'E', goal)
 
 
 
