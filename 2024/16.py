@@ -16,6 +16,7 @@ possible_dirs = {
 
 def find_shortest_path(obstacles, start, start_dir, goal):
     visited = set()
+    visited.add((start[0], start[1], start_dir))
     queue = deque([(start[0], start[1], start_dir, 0)])
     min_points = float('inf')
 
@@ -33,7 +34,7 @@ def find_shortest_path(obstacles, start, start_dir, goal):
                 new_x, new_y = x + dx, y + dy
                 new_points = points + 1
                 state = (new_x, new_y, curr_dir)
-                if (new_x, new_y) in obstacles or new_points >= min_points:
+                if (new_x, new_y) in obstacles or new_points > min_points:
                     continue
                 if state not in visited:
                     visited.add(state)
@@ -42,7 +43,7 @@ def find_shortest_path(obstacles, start, start_dir, goal):
                 # Turn
                 new_points = points + 1000
                 state = (x, y, next_dir)
-                if new_points >= min_points:
+                if new_points > min_points:
                     continue
                 if state not in visited:
                     visited.add(state)
