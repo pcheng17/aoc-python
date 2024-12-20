@@ -1,5 +1,4 @@
-from collections import deque, defaultdict
-from common.utils import manhattan
+from collections import deque
 import numpy as np
 
 directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
