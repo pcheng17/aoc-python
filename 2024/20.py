@@ -1,4 +1,6 @@
-from collections import deque
+from collections import deque, defaultdict
+from common.utils import manhattan
+import numpy as np
 
 directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
@@ -81,18 +83,16 @@ def part_b(input):
                 obstacles.add((i, j))
 
     path = get_path(walkway, start, goal)
-    total_time = len(path) - 1
+    xs = np.array([x for x, _ in path])
+    ys = np.array([y for _, y in path])
 
-    cheat_times = []
-    for i, tile in enumerate(path):
-        for j, tile2 in enumerate(path[i+2:], i+2):
-            # Figure out if it's possible to get from tile to tile2 by using only obstacles
-            t = bfs(obstacles, tile, tile2)
-            if t != -1:
-                cheat_times.append(total_time - (j - i) + t)
-                break
+    n = len(xs)
+    i, j = np.triu_indices(n, k=100)
 
-    return sum([1 for t in cheat_times if total_time - t >= 100])
+    dx = np.abs(xs[i] - xs[j])
+    dy = np.abs(ys[i] - ys[j])
+    distances = dx + dy
+    saved_time = (j - i) - distances
 
+    return np.sum((distances <= 20) & (saved_time >= 100))
 
-# 2042 too low
