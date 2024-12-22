@@ -1,4 +1,5 @@
 import itertools
+import time
 
 def generate(n):
     n = ((n * 64) ^ n) % 16777216
@@ -41,9 +42,5 @@ def part_b(input):
     for memo in memos:
         all_keys.update(memo.keys())
 
-    qwer = []
-    for k in all_keys:
-        qwer.append(sum(memo[k] for memo in memos if k in memo))
-
-    return max(qwer)
+    return max(sum(memo[k] for memo in memos if k in memo) for k in all_keys)
 
