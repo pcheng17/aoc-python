@@ -28,34 +28,63 @@ def part_b(input):
         graph[a].add(b)
         graph[b].add(a)
 
-    # Find the largest complete subgraph
-    nodes = set(graph.keys())
-    curr_best = set()
+    # Find all 3-cycles
+    triangles = set()
+    for a in graph:
+        for b in graph[a]:
+            for c in graph[a]:
+                if b != c and c in graph[b]:
+                    triangles.add(tuple(sorted([a, b, c])))
 
-    while nodes:
-        degs = {node: len(graph[node]) for node in nodes}
-        curr = max(degs.items(), key=lambda x: x[1])[0]
-        subgraph = {curr}
-        candidates = set(graph[curr])
-        while candidates:
-            valid_candidates = {
-                v : len(graph[v].intersection(subgraph))
-                for v in candidates
-                if all(u in graph[v] for u in subgraph)
-            }
+    nodes = set()
+    for t in triangles:
+        for v in t:
+            nodes.add(v)
 
-            if not valid_candidates:
-                break
+    a = {v: len([t for t in triangles if v in t]) for v in nodes}
 
-            curr = max(valid_candidates.items(), key=lambda x: x[1])[0]
-            subgraph.add(curr)
+    b = defaultdict(set)
+    for k, v in a.items():
+        b[v].add(k)
 
-            candidates = candidates.intersection(graph[curr])
+    for k, v in b.items():
+        print(f"{k}: {v}")
 
-        if curr_best is None or len(subgraph) > len(curr_best):
-            curr_best = subgraph
 
-        nodes -= subgraph
 
-    return ','.join(sorted(curr_best))
+
+
+
+
+
+    # # Find the largest complete subgraph
+    # nodes = set(graph.keys())
+    # curr_best = set()
+    #
+    # while nodes:
+    #     degs = {node: len(graph[node]) for node in nodes}
+    #     curr = max(degs.items(), key=lambda x: x[1])[0]
+    #     subgraph = {curr}
+    #     candidates = set(graph[curr])
+    #     while candidates:
+    #         valid_candidates = {
+    #             v : len(graph[v].intersection(subgraph))
+    #             for v in candidates
+    #             if all(u in graph[v] for u in subgraph)
+    #         }
+    #
+    #         if not valid_candidates:
+    #             break
+    #
+    #         curr = max(valid_candidates.items(), key=lambda x: x[1])[0]
+    #         subgraph.add(curr)
+    #
+    #         candidates = candidates.intersection(graph[curr])
+    #
+    #     if curr_best is None or len(subgraph) > len(curr_best):
+    #         curr_best = subgraph
+    #
+    #     nodes -= subgraph
+    #
+    # return ','.join(sorted(curr_best))
 
