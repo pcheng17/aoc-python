@@ -35,7 +35,7 @@ def find_shortest_path(obstacles, start, start_dir, goal):
                 state = (new_x, new_y, curr_dir)
                 if (new_x, new_y) in obstacles or new_points > min_points:
                     continue
-                if state not in visited or new_points < visited[state]:
+                if state not in visited or new_points <= visited[state]:
                     visited[state] = new_points
                     queue.append((new_x, new_y, curr_dir, new_points))
             else:
@@ -44,15 +44,15 @@ def find_shortest_path(obstacles, start, start_dir, goal):
                 state = (x, y, next_dir)
                 if new_points > min_points:
                     continue
-                if state not in visited or new_points < visited[state]:
+                if state not in visited or new_points <= visited[state]:
                     visited[state] = new_points
                     queue.append((x, y, next_dir, new_points))
 
     return min_points
 
 def find_all_tiles_of_best_paths(obstacles, start, start_dir, goal, goal_points):
-    visited = {(start[0], start[1], start_dir, (start,)): 0}
-    queue = deque([(start[0], start[1], start_dir, (start,), 0)])
+    visited = {(start[0], start[1], start_dir): 0}
+    queue = deque([(start[0], start[1], start_dir, {start}, 0)])
 
     all_tiles = set()
     while queue:
@@ -60,8 +60,7 @@ def find_all_tiles_of_best_paths(obstacles, start, start_dir, goal, goal_points)
 
         if (x, y) == goal:
             if points == goal_points:
-                for tile in path:
-                    all_tiles.add(tile)
+                all_tiles |= path
             continue
 
         for next_dir in possible_dirs[curr_dir]:
@@ -72,9 +71,9 @@ def find_all_tiles_of_best_paths(obstacles, start, start_dir, goal, goal_points)
                 new_points = points + 1
                 if (new_x, new_y) in obstacles or new_points > goal_points:
                     continue
-                new_path = (*path, (new_x, new_y))
-                state = (new_x, new_y, curr_dir, new_path)
-                if state not in visited or new_points < visited[state]:
+                new_path = path | {(new_x, new_y)}
+                state = (new_x, new_y, curr_dir)
+                if state not in visited or new_points <= visited[state]:
                     visited[state] = new_points
                     queue.append((new_x, new_y, curr_dir, new_path, new_points))
             else:
@@ -82,8 +81,8 @@ def find_all_tiles_of_best_paths(obstacles, start, start_dir, goal, goal_points)
                 new_points = points + 1000
                 if new_points > goal_points:
                     continue
-                state = (x, y, next_dir, path)
-                if state not in visited or new_points < visited[state]:
+                state = (x, y, next_dir)
+                if state not in visited or new_points <= visited[state]:
                     visited[state] = new_points
                     queue.append((x, y, next_dir, path, new_points))
 
@@ -125,4 +124,7 @@ def part_b(input):
             if c == "E":
                 goal = (i, j)
 
-    return len(find_all_tiles_of_best_paths(obstacles, start, 'E', goal, 92432))
+    n = find_shortest_path(obstacles, start, 'E', goal)
+    return len(find_all_tiles_of_best_paths(obstacles, start, 'E', goal, n))
+
+# 433 too low
