@@ -16,8 +16,6 @@ def part_a(input):
             if grid[i][j] == 9:
                 trailends.append((i, j))
 
-    print(f"Number of trailheads: {len(trailheads)}")
-
     scores = [[0] * nc for _ in range(nr)]
 
     # BFS from each trailend
@@ -59,8 +57,6 @@ def part_b(input):
                 trailheads.append((i, j))
             if grid[i][j] == 9:
                 trailends.append((i, j))
-
-    print(f"Number of trailheads: {len(trailheads)}")
 
     def dfs(pos, grid, count):
         height = grid[pos[0]][pos[1]]

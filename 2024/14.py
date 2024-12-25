@@ -1,5 +1,5 @@
 import re
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
 
 def part_a(input):
@@ -54,31 +54,30 @@ def part_b(input):
                     count = 1
                 curr = tmp[k]
                 if count == 8:
-                    possible = True
+                    return t+1
 
-        if possible:
-            print(f"Possible at time {t}")
-            fig = plt.figure()
-            grid = np.zeros((nr, nc))
-            for x, y in botp:
-                grid[y, x] = 1
-            plt.imshow(grid)
-            plt.show()
+        # if possible:
+        #     # fig = plt.figure()
+        #     grid = np.zeros((nr, nc))
+        #     for x, y in botp:
+        #         grid[y, x] = 1
+        #     # plt.imshow(grid)
+        #     # plt.show()
+        #
+        # points = np.array(botp)
+        # mean = np.mean(points, axis=0)
+        # points = points - mean
+        # cov = np.cov(points.T)
+        # evals, evecs = np.linalg.eig(cov)
+        # eigenvalues.append((evals[0], evals[1]))
 
-        points = np.array(botp)
-        mean = np.mean(points, axis=0)
-        points = points - mean
-        cov = np.cov(points.T)
-        evals, evecs = np.linalg.eig(cov)
-        eigenvalues.append((evals[0], evals[1]))
-
-    ers = [x[0]/x[1] for x in eigenvalues]
-    ts = list(range(10403))
-    plt.figure()
-    plt.scatter(ts, [x[0] for x in eigenvalues], label='eval1')
-    plt.scatter(ts, [x[1] for x in eigenvalues], label='eval2')
-    plt.scatter(ts[7752], eigenvalues[7752][0], color='red', marker='x')
-    plt.scatter(ts[7752], eigenvalues[7752][1], color='red', marker='x')
-    plt.legend()
-    plt.show()
+    # ers = [x[0]/x[1] for x in eigenvalues]
+    # ts = list(range(10403))
+    # plt.figure()
+    # plt.scatter(ts, [x[0] for x in eigenvalues], label='eval1')
+    # plt.scatter(ts, [x[1] for x in eigenvalues], label='eval2')
+    # plt.scatter(ts[7752], eigenvalues[7752][0], color='red', marker='x')
+    # plt.scatter(ts[7752], eigenvalues[7752][1], color='red', marker='x')
+    # plt.legend()
+    # plt.show()
 
