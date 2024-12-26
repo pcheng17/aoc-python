@@ -1,6 +1,2 @@
-run YEAR DAY:
-    watchexec -c -r -w ./{{YEAR}} "python aoc.py --year={{YEAR}} --day={{DAY}}"
-
-test YEAR DAY:
-    watchexec -c -r -w ./{{YEAR}} "python aoc.py --year={{YEAR}} --day={{DAY}} -e"
-
+run YEAR DAY *FLAGS:
+    watchexec -c -r -w ./{{YEAR}} "python aoc.py --year={{YEAR}} --day={{DAY}} {{FLAGS}}"
