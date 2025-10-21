@@ -1,5 +1,4 @@
 import click
-import datetime
 import importlib
 import os
 import sys
@@ -79,8 +78,8 @@ def get_input(year, day, example = True):
 def run(year, day, parts, example):
     """Run the solution for the specified Advent of Code problem"""
 
-    if not os.path.exists(f'./{year}/{day:02d}.py'):
-        sys.exit(f'Solution code doesn\'t exist.')
+    if not Path(f'./{year}/{day:02d}.py').exists():
+        sys.exit(f"Solution code doesn't exist.")
 
     print_banner(year, day)
 
@@ -90,7 +89,7 @@ def run(year, day, parts, example):
         print(e)
         sys.exit()
 
-    parts_to_run = set([p.lower() for element in parts for p in element]) if parts else ['a', 'b']
+    parts_to_run = sorted(set(''.join(parts).lower()) if parts else ['a', 'b'])
 
     module = importlib.import_module(f'{year}.{day:02d}')
     for part in sorted(parts_to_run):
@@ -128,7 +127,7 @@ def benchmark(year):
             else:
                 tmp.append(0)
 
-        timing.append((tmp[0], tmp[1]))
+        timing.append(tuple(tmp))
 
     print_timing_table(timing)
 
@@ -145,13 +144,13 @@ def create_scaffold(year, day):
         filepath.parents[0].mkdir(parents=True, exist_ok=True)
 
     filepath.write_text(
-        dedent('''\
+        dedent(f'''\
             def part_a(input):
                 data = input.splitlines()
 
             def part_b(input):
                 data = input.splitlines()
-            ''').format(day=day, year=year)
+            ''')
         )
     click.echo(f'Created {filepath}')
     return True
@@ -180,11 +179,9 @@ class PartType(click.ParamType):
     name = 'part'
 
     def convert(self, value, param, ctx):
-        allowed_chars = {'A', 'B', 'a', 'b'}
-        if all(char in allowed_chars for char in value):
-            return value
-        else:
+        if not set(value).issubset({'A', 'B', 'a', 'b'}):
             self.fail(f"{value!r} contains invalid characters. Allowed characters are: A, B, a, b.", param, ctx)
+        return value
 
 
 @click.command()
