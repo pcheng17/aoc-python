@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 def part_a(input):
     data = input.splitlines()
     ans = 0
@@ -12,7 +10,6 @@ def part_a(input):
                     current_max = num
         ans += current_max
     return ans
-
 
 def find_largest(num_str: str, digits: int) -> int:
     result = []
