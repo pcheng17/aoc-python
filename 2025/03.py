@@ -33,11 +33,4 @@ def find_largest(num_str: str, digits: int) -> int:
     return int(''.join(result))
 
 def part_b(input):
-    data = input.splitlines()
-    ans = 0
-    for line in data:
-        print(f"Line: ", line)
-        x = find_largest(line, 12)
-        print(f"Largest: ", x)
-        ans += int(x)
-    return ans
+    return sum([find_largest(line, 12) for line in input.splitlines()])
