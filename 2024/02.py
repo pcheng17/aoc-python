@@ -5,12 +5,12 @@ def is_safe(row):
     return incCheck or decCheck
 
 def is_safe_b(row):
-    sf = is_safe(row)
+    if is_safe(row):
+        return True
     for i in range(len(row)):
-        tmp = row.copy()
-        tmp.pop(i)
-        sf = sf or is_safe(tmp)
-    return sf
+        if is_safe(row[0:i] + row[i+1:]):
+            return True
+    return False
 
 def part_a(input):
     data = input.splitlines()
